@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WashedByWon</title>
+<link href="https://fonts.googleapis.com/css2?family=Sacramento&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<!--
+=============================================================
+  WASHEDBYWON — FULL WEBSITE SOURCE
+  Business: Mobile car detailing, DMV area
+  Instagram: @WashedByWon
+  Service area: Baltimore City/County, Silver Spring/
+                Montgomery County, Washington DC
+
+  BRAND:
+    - Black background (#080808)
+    - White script logo font (Sacramento)
+    - Purple accent (#5c1f9e / #7b2fd4 / #a066e0)
+    - Logo: "Washed By Won" script top, purple stars,
+            double-ring circle emblem with "Wb/W" inside
+
+  SERVICES & PRICING:
+    Interior Detail:
+      Small $65 | Medium $85 | Large/SUV/Truck $105
+    Exterior Detail:
+      Small $75 | Medium $95 | Large/SUV/Truck $115
+    Full Detail Bundle (10% off combined):
+      Small $129 (was $143) | Medium $162 (was $180) | Large $198 (was $220)
+
+  ADD-ONS (all services):
+    Deep Seat Cleaning: +$25
+    Extra Dirty Fee: +$50 (interior only, note displayed)
+    Travel Fee (25+ miles): +$15
+
+  PAYMENT: Cash, Zelle, CashApp, Venmo, Card (Square)
+
+  CALENDAR BOOKING:
+    Available days: Mon, Wed, Fri, Sat (DOW: 1,3,5,6)
+    Available times: 9AM–4PM (hourly slots)
+    -- Replace with real availability before launch --
+
+  SECTIONS: Hero, Area Strip, Services, Booking (calendar),
+            Testimonials (placeholder), FAQ, Contact, Footer
+
+  TO DO BEFORE LAUNCH:
+    1. Replace placeholder testimonials with real ones
+    2. Set real available days/times in JS (availableDOW, availableTimes)
+    3. Connect booking form to backend (email/SMS notification)
+       — recommend Square Appointments or Calendly embed
+    4. Add real before/after photo gallery once M3 shoot is done
+    5. Add phone number to contact section
+    6. Publish via GitHub Pages (free) or Squarespace/Wix
+=============================================================
+-->
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080808;
+  --white:#f5f5f5;
+  --purple:#5c1f9e;
+  --purple-bright:#7b2fd4;
+  --purple-light:#a066e0;
+  --purple-faint:#1a0a2e;
+  --gray:#141414;
+  --mid:#1e1e1e;
+  --muted:#666;
+  --border:#1f1f1f;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);min-height:100vh}
+
+/* ── NAV ── */
+nav{display:flex;justify-content:space-between;align-items:center;padding:1.1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--black);z-index:100}
+.logo-text{font-family:'Sacramento',cursive;font-size:2rem;color:var(--white);text-shadow:2px 2px 0 var(--purple)}
+.nav-links{display:flex;gap:1.4rem;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;letter-spacing:0.05em;transition:color 0.2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{background:var(--purple);color:var(--white)!important;padding:0.4rem 1rem;border-radius:2px;font-weight:500}
+
+/* ── HERO ── */
+.hero{padding:3.5rem 2rem 3rem;max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.hero-tag{display:inline-block;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--purple-light);border:1px solid var(--purple);padding:0.25rem 0.7rem;border-radius:2px;margin-bottom:1.2rem}
+h1{font-family:'Sacramento',cursive;font-size:clamp(3.5rem,7vw,5.5rem);line-height:1;text-shadow:3px 3px 0 var(--purple);margin-bottom:1rem}
+.hero p{font-size:0.88rem;color:var(--muted);line-height:1.8;margin-bottom:1.6rem;max-width:380px}
+.hero-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.btn{background:var(--purple);color:var(--white);padding:0.75rem 1.7rem;font-size:0.8rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;border-radius:2px;transition:background 0.2s;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--purple-bright)}
+.ig-link{color:var(--muted);font-size:0.8rem;text-decoration:none;display:flex;align-items:center;gap:0.4rem;transition:color 0.2s}
+.ig-link:hover{color:var(--purple-light)}
+.logo-col{display:flex;justify-content:center;align-items:center}
+
+/* ── AREA STRIP ── */
+.area-strip{background:var(--purple-faint);border-top:1px solid var(--purple);border-bottom:1px solid var(--purple);padding:0.7rem 2rem;text-align:center;font-size:0.75rem;letter-spacing:0.1em;color:var(--purple-light)}
+.area-strip span{color:var(--white);font-weight:500}
+
+/* ── LAYOUT UTILITIES ── */
+.divider{display:flex;align-items:center;gap:1rem;padding:0 2rem;max-width:960px;margin:0 auto 2.5rem}
+.dl{flex:1;height:1px;background:var(--border)}
+.dt{font-size:0.65rem;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase}
+.section{max-width:960px;margin:0 auto;padding:0 2rem 3.5rem}
+.section-label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:1.1rem}
+
+/* ── SERVICES ── */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.scard{background:var(--gray);padding:1.4rem;cursor:pointer;position:relative;transition:background 0.2s}
+.scard:hover{background:var(--mid)}
+.scard.sel{background:var(--mid);outline:2px solid var(--purple);outline-offset:-2px}
+.scard h3{font-size:0.82rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.9rem}
+.pr{display:flex;justify-content:space-between;font-size:0.76rem;color:var(--muted);padding:0.26rem 0;border-bottom:1px solid #1e1e1e}
+.pr:last-child{border-bottom:none}
+.pr span:last-child{color:var(--purple-light);font-weight:500}
+.chk{position:absolute;top:0.9rem;right:0.9rem;width:18px;height:18px;border-radius:50%;background:var(--purple);display:none;align-items:center;justify-content:center;font-size:9px}
+.scard.sel .chk{display:flex}
+.btag{display:inline-block;background:var(--purple);color:#fff;font-size:0.56rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.16rem 0.55rem;margin-bottom:0.5rem;border-radius:2px}
+.orig{color:var(--muted);font-size:0.65rem;text-decoration:line-through;margin-left:3px}
+
+/* ── ADD-ONS ── */
+.addon-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+.acard{background:var(--gray);padding:1rem 1.3rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s;gap:0.5rem}
+.acard:hover{background:var(--mid)}
+.acard.sel{background:var(--mid);outline:2px solid var(--purple);outline-offset:-2px}
+.aname{font-size:0.8rem}
+.asub{font-size:0.65rem;color:var(--muted);margin-top:2px}
+.aprice{font-size:0.8rem;color:var(--purple-light);font-weight:500;flex-shrink:0}
+
+/* ── BOOKING / CALENDAR ── */
+.booking-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.cal-box{background:var(--gray);border:1px solid var(--border);padding:1.4rem}
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem}
+.cal-month{font-size:0.88rem;font-weight:500}
+.cal-nav{background:none;border:1px solid var(--border);color:var(--white);padding:0.28rem 0.65rem;cursor:pointer;border-radius:2px;font-size:0.78rem;transition:background 0.2s}
+.cal-nav:hover{background:var(--mid)}
+.cdh{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:5px}
+.cdl{text-align:center;font-size:0.58rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;padding:0.18rem 0}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cday{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:0.72rem;border-radius:2px;color:var(--muted)}
+.cday.past{color:#222}
+.cday.avail{background:var(--purple-faint);color:var(--purple-light);cursor:pointer;border:1px solid var(--purple);transition:background 0.15s}
+.cday.avail:hover{background:var(--purple);color:#fff}
+.cday.selday{background:var(--purple)!important;color:#fff!important;font-weight:500}
+.cday.unavail{color:#1e1e1e}
+.tslots{margin-top:0.9rem}
+.tlabel{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.slot{background:var(--gray);border:1px solid var(--border);color:var(--muted);padding:0.38rem 0.2rem;text-align:center;font-size:0.7rem;border-radius:2px;cursor:default}
+.slot.open{color:var(--purple-light);border-color:var(--purple);cursor:pointer;transition:all 0.15s}
+.slot.open:hover{background:var(--purple);color:#fff}
+.slot.selslot{background:var(--purple);color:#fff;border-color:var(--purple)}
+
+/* ── BOOKING FORM ── */
+.form-box{background:var(--gray);border:1px solid var(--border);padding:1.4rem}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-bottom:0.9rem}
+.fgrp{display:flex;flex-direction:column;gap:0.32rem}
+.fgrp.full{grid-column:1/-1}
+label{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted)}
+input,select,textarea{background:var(--black);border:1px solid #2a2a2a;color:var(--white);padding:0.62rem 0.85rem;font-family:'DM Sans',sans-serif;font-size:0.83rem;border-radius:2px;outline:none;transition:border-color 0.2s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--purple)}
+textarea{resize:vertical;min-height:65px}
+select option{background:#111}
+
+/* ── SUMMARY BAR ── */
+.sumbar{background:var(--purple-faint);border:1px solid var(--purple);padding:0.9rem 1.2rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;flex-wrap:wrap;gap:0.6rem}
+.slabel{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple-light);margin-bottom:0.15rem}
+.sval{font-size:0.9rem;font-weight:500;color:var(--white)}
+.sval.price{color:var(--purple-light);font-size:1.2rem}
+
+/* ── PAYMENT ── */
+.paystrip{background:var(--gray);border:1px solid var(--border);padding:1rem 1.3rem;display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;margin-top:1px}
+.plabel{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
+.pbadges{display:flex;gap:0.4rem;flex-wrap:wrap}
+.pbadge{background:var(--mid);border:1px solid var(--border);color:var(--white);font-size:0.7rem;padding:0.25rem 0.65rem;border-radius:2px}
+
+/* ── TESTIMONIALS ── */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+.tcard{background:var(--gray);padding:1.4rem}
+.stars{color:var(--purple-light);font-size:0.8rem;margin-bottom:0.7rem;letter-spacing:0.1em}
+.tcard p{font-size:0.81rem;color:#999;line-height:1.8;margin-bottom:0.7rem;font-style:italic}
+.tauthor{font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.tauthor span{color:var(--purple-light)}
+
+/* ── FAQ ── */
+.faqlist{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border)}
+.faqitem{background:var(--gray)}
+.faqq{padding:0.95rem 1.4rem;font-size:0.83rem;font-weight:500;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s;user-select:none;gap:1rem}
+.faqq:hover{background:var(--mid)}
+.faqicon{color:var(--purple-light);font-size:1rem;transition:transform 0.2s;flex-shrink:0}
+.faqa{display:none;padding:0 1.4rem 0.95rem;font-size:0.8rem;color:var(--muted);line-height:1.8}
+.faqitem.open .faqa{display:block}
+.faqitem.open .faqicon{transform:rotate(45deg)}
+
+/* ── CONTACT ── */
+.cgrid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1px}
+.ccard{background:var(--gray);padding:1.4rem;text-align:center}
+.ccard a{color:var(--purple-light);text-decoration:none;font-size:0.85rem;display:block;margin-top:0.35rem}
+.ccard a:hover{color:var(--white)}
+.clabel{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
+.cicon{font-size:1.1rem;margin-bottom:0.35rem}
+
+/* ── SUCCESS SCREEN ── */
+.success{display:none;text-align:center;padding:4rem 2rem}
+.sicon{width:56px;height:56px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;margin:0 auto 1.1rem;font-size:1.2rem}
+.success h2{font-family:'Sacramento',cursive;font-size:2.8rem;margin-bottom:0.7rem;text-shadow:2px 2px 0 var(--purple)}
+.success p{color:var(--muted);max-width:340px;margin:0 auto;line-height:1.8}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:1.5rem 2rem;text-align:center;font-size:0.75rem;color:var(--muted)}
+footer a{color:var(--purple-light);text-decoration:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:680px){
+  .hero{grid-template-columns:1fr}
+  .logo-col{display:none}
+  .services-grid{grid-template-columns:1fr}
+  .booking-layout{grid-template-columns:1fr}
+  .fg{grid-template-columns:1fr}
+  .nav-links{gap:0.75rem}
+  .nav-links a{font-size:0.72rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<nav>
+  <div class="logo-text">Washed By Won</div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="https://app.squareup.com/appointments/book/g7w3mmyql7woni/L5S1NPG5G8934/start" target="_blank">Book</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Contact</a>
+    <a href="https://app.squareup.com/appointments/book/g7w3mmyql7woni/L5S1NPG5G8934/start" target="_blank" class="nav-cta">Book Now</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="hero">
+  <div>
+    <div class="hero-tag">★ Mobile Detailing · DMV Area ★</div>
+    <h1>Washed<br>By Won</h1>
+    <p>Premium interior & exterior detailing brought directly to you. Serving Baltimore, Silver Spring & DC.</p>
+    <div class="hero-actions">
+      <button class="btn" onclick="window.open('https://app.squareup.com/appointments/book/g7w3mmyql7woni/L5S1NPG5G8934/start','_blank')">Book a Detail</button>
+      <a href="https://instagram.com/WashedByWon" class="ig-link" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>
+        @WashedByWon
+      </a>
+    </div>
+  </div>
+
+  <!-- LOGO — faithful SVG recreation of WashedByWon logo -->
+  <div class="logo-col">
+    <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg" width="260" height="260">
+      <rect width="420" height="420" fill="#080808" rx="12"/>
+      <!-- "Washed By Won" script lettering -->
+      <text x="210" y="108"
+        font-family="Sacramento, cursive" font-size="74" fill="white"
+        text-anchor="middle" stroke="#5c1f9e" stroke-width="7"
+        paint-order="stroke" letter-spacing="1">Washed By Won</text>
+      <!-- Purple stars -->
+      <text x="72"  y="172" font-size="30" fill="#7b2fd4" text-anchor="middle">★</text>
+      <text x="348" y="172" font-size="30" fill="#7b2fd4" text-anchor="middle">★</text>
+      <!-- Outer purple ring -->
+      <circle cx="210" cy="278" r="118" fill="#0d0020" stroke="#7b2fd4" stroke-width="8"/>
+      <!-- Inner white ring -->
+      <circle cx="210" cy="278" r="98"  fill="none"    stroke="white"   stroke-width="3"/>
+      <!-- Wb monogram -->
+      <text x="210" y="263"
+        font-family="Sacramento, cursive" font-size="64" fill="white"
+        text-anchor="middle" stroke="#5c1f9e" stroke-width="6"
+        paint-order="stroke">Wb</text>
+      <!-- W monogram -->
+      <text x="210" y="322"
+        font-family="Sacramento, cursive" font-size="64" fill="white"
+        text-anchor="middle" stroke="#5c1f9e" stroke-width="6"
+        paint-order="stroke">W</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     SERVICE AREA STRIP
+════════════════════════════════════════ -->
+<div class="area-strip">
+  Serving <span>Baltimore City & County</span> ·
+  <span>Silver Spring / Montgomery County</span> ·
+  <span>Washington DC</span>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SERVICES & PRICING
+════════════════════════════════════════ -->
+<div style="height:2.5rem"></div>
+<div class="divider"><div class="dl"></div><div class="dt">Services & Pricing</div><div class="dl"></div></div>
+<section class="section" id="services">
+  <div class="section-label">Choose your service</div>
+  <div class="services-grid">
+
+    <!-- Interior -->
+    <div class="scard" onclick="selectService(this,'Interior Detail')">
+      <div class="chk">✓</div>
+      <h3>Interior Detail</h3>
+      <div class="pr"><span>Small</span><span>$65</span></div>
+      <div class="pr"><span>Medium</span><span>$85</span></div>
+      <div class="pr"><span>Large / SUV / Truck</span><span>$105</span></div>
+    </div>
+
+    <!-- Exterior -->
+    <div class="scard" onclick="selectService(this,'Exterior Detail')">
+      <div class="chk">✓</div>
+      <h3>Exterior Detail</h3>
+      <div class="pr"><span>Small</span><span>$75</span></div>
+      <div class="pr"><span>Medium</span><span>$95</span></div>
+      <div class="pr"><span>Large / SUV / Truck</span><span>$115</span></div>
+    </div>
+
+    <!-- Bundle — 10% off combined price -->
+    <div class="scard" onclick="selectService(this,'Full Detail Bundle')">
+      <div class="chk">✓</div>
+      <div class="btag">★ Best Value — 10% Off</div>
+      <h3>Full Detail Bundle</h3>
+      <div class="pr"><span>Small</span><span>$129 <s class="orig">$143</s></span></div>
+      <div class="pr"><span>Medium</span><span>$162 <s class="orig">$180</s></span></div>
+      <div class="pr"><span>Large / SUV / Truck</span><span>$198 <s class="orig">$220</s></span></div>
+    </div>
+  </div>
+
+  <!-- Add-ons -->
+  <div style="margin-top:1px">
+    <div class="addon-grid">
+      <div class="acard" onclick="toggleAddon(this,'Deep Seat Cleaning',25)">
+        <div><div class="aname">Deep Seat Cleaning</div></div>
+        <span class="aprice">+$25</span>
+      </div>
+      <div class="acard" onclick="toggleAddon(this,'Extra Dirty Fee',50)">
+        <div>
+          <div class="aname">Extra Dirty Fee</div>
+          <div class="asub">Interior only</div>
+        </div>
+        <span class="aprice">+$50</span>
+      </div>
+      <div class="acard" onclick="toggleAddon(this,'Travel Fee (25+ mi)',15)">
+        <div><div class="aname">Travel Fee (25+ miles)</div></div>
+        <span class="aprice">+$15</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     BOOKING — CALENDAR + FORM
+════════════════════════════════════════ -->
+<div class="divider"><div class="dl"></div><div class="dt">Book Your Appointment</div><div class="dl"></div></div>
+<section class="section" id="book">
+  <div style="background:var(--gray);border:1px solid var(--border);padding:3rem 2rem;text-align:center;">
+    <div style="font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:1rem">Online Booking</div>
+    <h2 style="font-family:'Sacramento',cursive;font-size:3.5rem;line-height:1;text-shadow:2px 2px 0 var(--purple);margin-bottom:1rem">Book Your Detail</h2>
+    <p style="color:var(--muted);font-size:0.9rem;line-height:1.8;max-width:420px;margin:0 auto 2rem">Select your service, pick a date and time, and pay your deposit — all in one place. Powered by Square.</p>
+    <a href="https://app.squareup.com/appointments/book/g7w3mmyql7woni/L5S1NPG5G8934/start"
+       target="_blank" class="btn" style="font-size:0.9rem;padding:1rem 2.5rem;text-decoration:none;display:inline-block">
+      Schedule Now →
+    </a>
+    <div style="margin-top:2rem">
+      <div class="paystrip" style="justify-content:center;background:transparent;border:none;padding:0">
+        <div class="plabel">We accept</div>
+        <div class="pbadges">
+          <div class="pbadge">Cash</div>
+          <div class="pbadge">Zelle</div>
+          <div class="pbadge">CashApp</div>
+          <div class="pbadge">Venmo</div>
+          <div class="pbadge">Card (Square)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     TESTIMONIALS
+     TODO: Replace placeholders with real reviews
+════════════════════════════════════════ -->
+<div class="divider"><div class="dl"></div><div class="dt">What Clients Say</div><div class="dl"></div></div>
+<section class="section" id="reviews">
+  <div class="section-label">Customer reviews</div>
+  <div class="tgrid">
+    <div class="tcard">
+      <div class="stars">★★★★★</div>
+      <p>"Won came out same week and completely transformed my car. The interior looked brand new — couldn't believe it was the same seats."</p>
+      <div class="tauthor">— Marcus T. · <span>Baltimore, MD</span></div>
+    </div>
+    <div class="tcard">
+      <div class="stars">★★★★★</div>
+      <p>"Super professional, on time, and the detail was immaculate. My whole car smelled amazing after. Will definitely be booking again."</p>
+      <div class="tauthor">— Destiny R. · <span>Silver Spring, MD</span></div>
+    </div>
+    <div class="tcard">
+      <div class="stars">★★★★★</div>
+      <p>"Best mobile detailer in the DMV. Came right to my apartment parking lot. Convenient and high quality — 10/10."</p>
+      <div class="tauthor">— Kevin A. · <span>Washington, DC</span></div>
+    </div>
+  </div>
+  <p style="font-size:0.68rem;color:var(--muted);margin-top:0.7rem;font-style:italic">
+    * Replace with real client testimonials once collected.
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FAQ
+════════════════════════════════════════ -->
+<div class="divider"><div class="dl"></div><div class="dt">FAQ</div><div class="dl"></div></div>
+<section class="section" id="faq">
+  <div class="section-label">Frequently asked questions</div>
+  <div class="faqlist">
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">Do I need to be home during the detail? <span class="faqicon">+</span></div>
+      <div class="faqa">Nope! As long as we have access to your vehicle and a nearby water/power source, you don't need to be present. We'll notify you when we're done.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">Do you bring your own supplies? <span class="faqicon">+</span></div>
+      <div class="faqa">Yes — we bring everything. Professional-grade cleaning products, vacuums, steam cleaners, and microfiber towels. Just provide the car.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">How long does a detail take? <span class="faqicon">+</span></div>
+      <div class="faqa">Interior details: 2–3 hours. Exterior details: 1.5–2 hours. Full bundle: 3–5 hours depending on vehicle size and condition.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">What's the Extra Dirty Fee? <span class="faqicon">+</span></div>
+      <div class="faqa">If your vehicle's interior has excessive dirt, heavy staining, or pet hair buildup requiring extra time and product, this fee covers that additional labor. We'll always let you know before applying it.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">What areas do you serve? <span class="faqicon">+</span></div>
+      <div class="faqa">We serve Baltimore City & County, Silver Spring / Montgomery County, and Washington DC. Travel over 25 miles incurs a +$15 travel fee.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">What is your deposit and cancellation policy? <span class="faqicon">+</span></div>
+      <div class="faqa">A 50% deposit is required at booking to secure your appointment. The remaining balance is due upon completion. Cancellations made 48+ hours in advance receive a full refund. Cancellations under 48 hours forfeit the deposit. Rescheduling is free up to 24 hours before your appointment. No-shows will be charged the full service amount.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">How do I pay? <span class="faqicon">+</span></div>
+      <div class="faqa">We accept Cash, Zelle, CashApp, Venmo, and Card via Square. Payment is due upon completion.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CONTACT
+════════════════════════════════════════ -->
+<div class="divider"><div class="dl"></div><div class="dt">Get In Touch</div><div class="dl"></div></div>
+<section class="section" id="contact">
+  <div class="section-label">Contact us</div>
+  <div class="cgrid2">
+    <div class="ccard">
+      <div class="cicon">📸</div>
+      <div class="clabel">Instagram</div>
+      <a href="https://instagram.com/WashedByWon" target="_blank">@WashedByWon</a>
+    </div>
+    <div class="ccard">
+      <div class="cicon">💬</div>
+      <div class="clabel">Have a question?</div>
+      <a href="https://instagram.com/WashedByWon" target="_blank">DM us on Instagram</a>
+    </div>
+    <div class="ccard">
+      <div class="cicon">📍</div>
+      <div class="clabel">Service Area</div>
+      <a>Baltimore · Silver Spring · DC</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div style="color:var(--purple-light);margin-bottom:0.6rem">★ ★ ★</div>
+  &copy; 2025 <strong>Washed By Won</strong> &nbsp;·&nbsp; DMV Area &nbsp;·&nbsp;
+  <a href="https://instagram.com/WashedByWon" target="_blank">@WashedByWon</a>
+</footer>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+// ── PRICING ──────────────────────────────────────────────
+const prices = {
+  'Interior Detail':    { Small: 65,  Medium: 85,  'Large/SUV/Truck': 105 },
+  'Exterior Detail':   { Small: 75,  Medium: 95,  'Large/SUV/Truck': 115 },
+  'Full Detail Bundle':{ Small: 129, Medium: 162, 'Large/SUV/Truck': 198 }
+  // Bundle = 10% off combined (Interior + Exterior) price
+  // Small: $143 → $129 | Medium: $180 → $162 | Large: $220 → $198
+};
+
+// ── STATE ─────────────────────────────────────────────────
+let svc = null, addons = [], addTotal = 0, selDay = null, selTime = null;
+
+// ── CALENDAR CONFIG ───────────────────────────────────────
+// TODO: Update availableDOW and availableTimes to real schedule before launch
+// DOW: 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat
+const availableDOW   = [1, 3, 5, 6]; // Mon, Wed, Fri, Sat (PLACEHOLDER)
+const availableTimes = ['9:00 AM','10:00 AM','11:00 AM','12:00 PM',
+                        '1:00 PM','2:00 PM','3:00 PM','4:00 PM']; // PLACEHOLDER
+
+const months = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+let vy = new Date().getFullYear(), vm = new Date().getMonth();
+
+// ── SERVICE SELECTION ─────────────────────────────────────
+function selectService(el, name) {
+  document.querySelectorAll('.scard').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  svc = name;
+  updateSummary();
+  setTimeout(() => document.getElementById('book').scrollIntoView({ behavior: 'smooth' }), 300);
+}
+
+// ── ADD-ON TOGGLE ─────────────────────────────────────────
+function toggleAddon(el, name, price) {
+  el.classList.toggle('sel');
+  if (el.classList.contains('sel')) { addons.push(name); addTotal += price; }
+  else { addons = addons.filter(a => a !== name); addTotal -= price; }
+  updateSummary();
+}
+
+// ── SUMMARY BAR ───────────────────────────────────────────
+function updateSummary() {
+  const sz = document.getElementById('vs').value;
+  document.getElementById('ss').textContent  = svc || '—';
+  document.getElementById('sa').textContent  = addons.length ? addons.join(', ') : 'None';
+  document.getElementById('sdt').textContent = (selDay && selTime)
+    ? `${selDay} · ${selTime}` : (selDay || '—');
+  if (svc && sz && prices[svc] && prices[svc][sz]) {
+    document.getElementById('sp').textContent = '$' + (prices[svc][sz] + addTotal);
+  } else {
+    document.getElementById('sp').textContent = svc ? 'Select size' : '$—';
+  }
+}
+
+// ── CALENDAR ─────────────────────────────────────────────
+function changeMonth(d) {
+  vm += d;
+  if (vm > 11) { vm = 0; vy++; }
+  if (vm < 0)  { vm = 11; vy--; }
+  renderCal();
+}
+
+function renderCal() {
+  document.getElementById('cml').textContent = months[vm] + ' ' + vy;
+  const grid  = document.getElementById('cgrid');
+  grid.innerHTML = '';
+  const first = new Date(vy, vm, 1).getDay();
+  const days  = new Date(vy, vm + 1, 0).getDate();
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+
+  for (let i = 0; i < first; i++) {
+    const e = document.createElement('div'); e.className = 'cday'; grid.appendChild(e);
+  }
+  for (let d = 1; d <= days; d++) {
+    const el = document.createElement('div');
+    const dt = new Date(vy, vm, d);
+    el.textContent = d;
+    if (dt < today) {
+      el.className = 'cday past';
+    } else if (availableDOW.includes(dt.getDay())) {
+      el.className = 'cday avail';
+      const ds = `${months[vm].slice(0, 3)} ${d}`;
+      el.onclick = () => selectDay(el, ds);
+    } else {
+      el.className = 'cday unavail';
+    }
+    grid.appendChild(el);
+  }
+}
+
+function selectDay(el, ds) {
+  document.querySelectorAll('.cday').forEach(d => d.classList.remove('selday'));
+  el.classList.add('selday');
+  selDay = ds; selTime = null;
+  renderSlots(); updateSummary();
+}
+
+function renderSlots() {
+  const w = document.getElementById('tsw'), g = document.getElementById('sgrid');
+  w.style.display = 'block'; g.innerHTML = '';
+  availableTimes.forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'slot open'; el.textContent = t;
+    el.onclick = () => selectSlot(el, t);
+    g.appendChild(el);
+  });
+}
+
+function selectSlot(el, t) {
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('selslot'));
+  el.classList.add('selslot');
+  selTime = t; updateSummary();
+}
+
+// ── FORM SUBMIT ───────────────────────────────────────────
+// TODO: Replace with real backend (email/webhook) before launch
+function submitBooking() {
+  const fn = document.getElementById('fn').value.trim();
+  const ph = document.getElementById('ph').value.trim();
+  const em = document.getElementById('em').value.trim();
+  const vs = document.getElementById('vs').value;
+  if (!fn || !ph || !em || !vs || !svc || !selDay || !selTime) {
+    alert('Please complete all required fields, and select a service, date and time.');
+    return;
+  }
+  // TODO: POST form data to your backend or forward to Square Appointments / Calendly
+  document.getElementById('main-form').style.display = 'none';
+  document.getElementById('success').style.display   = 'block';
+}
+
+// ── FAQ ACCORDION ─────────────────────────────────────────
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+// ── INIT ──────────────────────────────────────────────────
+renderCal();
+</script>
+</body>
+</html>
