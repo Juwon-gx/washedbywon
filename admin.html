@@ -223,11 +223,131 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white)
 /* Loading */
 .loading{text-align:center;padding:2rem;color:var(--muted2);font-size:0.85rem}
 
+/* ── TOGGLE SWITCH ── */
+.toggle-wrap{display:flex;align-items:center;gap:0.6rem;flex-shrink:0}
+.toggle-label{font-size:0.78rem;font-weight:600;letter-spacing:0.04em;min-width:48px;text-align:right}
+.toggle-btn{
+  position:relative;width:48px;height:26px;border-radius:13px;
+  border:1px solid var(--border2);background:var(--gray);
+  cursor:pointer;transition:background 0.2s,border-color 0.2s;padding:0;flex-shrink:0;
+}
+.toggle-btn.on{background:var(--purple);border-color:var(--purple)}
+.toggle-thumb{
+  position:absolute;top:3px;left:3px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--muted);transition:transform 0.2s,background 0.2s;display:block;
+}
+.toggle-btn.on .toggle-thumb{transform:translateX(22px);background:#fff}
+
+/* ── SCHEDULE ── */
+.sched-status-bar{
+  background:var(--mid);border:1px solid var(--border2);border-radius:8px;
+  padding:1.25rem 1.5rem;display:flex;justify-content:space-between;
+  align-items:center;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap;
+}
+.section-heading{font-size:0.88rem;font-weight:600;margin-bottom:0.3rem;letter-spacing:0.02em}
+.status-hint{font-size:0.75rem;color:var(--muted2);line-height:1.5}
+.sched-section{
+  background:var(--mid);border:1px solid var(--border2);border-radius:8px;
+  padding:1.25rem 1.5rem;margin-bottom:1.25rem;
+}
+.sched-section-header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:1.25rem;gap:1rem;flex-wrap:wrap;
+}
+.sched-week-label{font-size:0.72rem;color:var(--muted2);margin-top:0.25rem}
+.sched-week-nav{display:flex;gap:0.4rem;flex-shrink:0}
+.sched-week-nav button{
+  background:var(--gray);border:1px solid var(--border2);color:var(--white);
+  width:32px;height:32px;border-radius:4px;cursor:pointer;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;
+}
+.sched-week-nav button:hover{border-color:var(--purple)}
+.sched-days{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.25rem}
+.day-card{
+  background:var(--gray);border:1px solid var(--border);border-radius:6px;
+  padding:0.85rem 1.25rem;display:flex;align-items:flex-start;gap:1rem;
+  transition:border-color 0.2s;
+}
+.day-card.day-open{border-color:rgba(92,31,158,0.4);background:var(--purple-faint)}
+.day-card.day-past{opacity:0.35;pointer-events:none}
+.day-info{min-width:80px;flex-shrink:0}
+.day-name{font-size:0.8rem;font-weight:600}
+.day-date{font-size:0.7rem;color:var(--muted2);margin-top:2px}
+.day-toggle{
+  background:var(--mid);border:1px solid var(--border2);color:var(--muted2);
+  font-size:0.7rem;font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:0.04em;
+  padding:0 0.75rem;height:32px;border-radius:4px;cursor:pointer;
+  transition:all 0.15s;white-space:nowrap;flex-shrink:0;
+}
+.day-toggle.on{background:var(--purple);border-color:var(--purple);color:#fff}
+.day-toggle:disabled{opacity:0.4;cursor:default}
+.day-slots{display:flex;flex-wrap:wrap;gap:0.35rem;flex:1;align-content:flex-start}
+.day-slots.hidden{display:none}
+.slot-btn{
+  background:var(--mid);border:1px solid var(--border);color:var(--muted);
+  font-size:0.68rem;font-family:'DM Sans',sans-serif;
+  padding:0 0.65rem;height:28px;border-radius:4px;cursor:pointer;transition:all 0.15s;
+}
+.slot-btn:hover:not(:disabled){border-color:var(--purple);color:var(--white)}
+.slot-btn.slot-sel{background:var(--purple);border-color:var(--purple);color:#fff}
+.slot-btn:disabled{opacity:0.35;cursor:default}
+.sched-actions{display:flex;gap:0.75rem;flex-wrap:wrap}
+
+/* ── MESSAGES ── */
+.msg-sub-bar{
+  background:var(--purple-faint);border:1px solid rgba(92,31,158,0.3);
+  border-radius:8px;padding:1.1rem 1.5rem;margin-bottom:1.25rem;
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;
+}
+.msg-sub-count{font-size:1.5rem;font-weight:600;color:var(--purple-light)}
+.msg-sub-hint{font-size:0.72rem;color:var(--muted2);margin-top:0.2rem}
+.msg-composer{
+  background:var(--mid);border:1px solid var(--border2);border-radius:8px;
+  padding:1.25rem 1.5rem;margin-bottom:1.25rem;
+}
+.msg-composer textarea{
+  width:100%;background:var(--gray);border:1px solid var(--border2);
+  color:var(--white);padding:0.75rem 1rem;border-radius:4px;
+  font-family:'DM Sans',sans-serif;font-size:0.85rem;outline:none;
+  resize:vertical;min-height:80px;margin-top:0.75rem;transition:border-color 0.2s;
+}
+.msg-composer textarea:focus{border-color:var(--purple)}
+.msg-composer textarea::placeholder{color:var(--muted)}
+.msg-meta{display:flex;justify-content:space-between;font-size:0.68rem;color:var(--muted2);margin-top:0.4rem}
+.msg-log{
+  background:var(--mid);border:1px solid var(--border2);border-radius:8px;
+  padding:1.25rem 1.5rem;
+}
+.log-entry{border-bottom:1px solid var(--border);padding:0.85rem 0}
+.log-entry:last-child{border-bottom:none}
+.log-entry:first-child{padding-top:0.25rem}
+.log-body{font-size:0.8rem;color:var(--white);margin-bottom:0.35rem;line-height:1.5}
+.log-meta{display:flex;gap:1.25rem;font-size:0.68rem;color:var(--muted2);flex-wrap:wrap}
+.log-ok{color:var(--green-light)}
+.log-err{color:var(--red-light)}
+
+/* ── CONFIRM MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:900;
+  display:none;align-items:center;justify-content:center;padding:1.5rem;
+}
+.modal-overlay.open{display:flex}
+.confirm-card{
+  background:var(--mid);border:1px solid var(--border2);border-radius:10px;
+  padding:2rem;max-width:420px;width:100%;
+}
+.confirm-card h3{font-size:1rem;font-weight:600;margin-bottom:0.75rem}
+.confirm-card p{font-size:0.82rem;color:var(--muted2);margin-bottom:0.4rem;line-height:1.6}
+.confirm-actions{display:flex;gap:0.75rem;justify-content:flex-end;margin-top:1.5rem}
+
 /* Responsive */
 @media(max-width:700px){
   .stats-row{grid-template-columns:repeat(2,1fr)}
   .booking-card{grid-template-columns:1fr}
   .booking-actions{flex-direction:row;align-items:flex-start}
+  .day-card{flex-wrap:wrap}
+  .day-slots{width:100%}
 }
 @media(max-width:480px){
   .stats-row{grid-template-columns:1fr 1fr}
@@ -289,8 +409,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white)
 
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('list',this)">Bookings List</button>
+      <button class="tab active" onclick="switchTab('list',this)">Bookings</button>
       <button class="tab" onclick="switchTab('calendar',this)">Calendar</button>
+      <button class="tab" onclick="switchTab('schedule',this)">Schedule</button>
+      <button class="tab" onclick="switchTab('messages',this)">Messages</button>
     </div>
 
     <!-- List View -->
@@ -323,6 +445,92 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white)
       <div class="cal-grid" id="cal-grid"></div>
     </div>
 
+    <!-- Schedule View -->
+    <div id="schedule-view" style="display:none">
+
+      <!-- Site status toggle -->
+      <div class="sched-status-bar">
+        <div>
+          <div class="section-heading">Booking Status</div>
+          <div class="status-hint" id="status-hint">Loading…</div>
+        </div>
+        <div class="toggle-wrap">
+          <span class="toggle-label" id="toggle-label">—</span>
+          <button class="toggle-btn" id="status-toggle" onclick="toggleSiteStatus()">
+            <span class="toggle-thumb"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Weekly availability builder -->
+      <div class="sched-section">
+        <div class="sched-section-header">
+          <div>
+            <div class="section-heading">Set Weekly Availability</div>
+            <div class="sched-week-label" id="sched-week-label"></div>
+          </div>
+          <div class="sched-week-nav">
+            <button onclick="schedWeek(-1)" title="Previous week">&#8592;</button>
+            <button onclick="schedWeek(1)"  title="Next week">&#8594;</button>
+          </div>
+        </div>
+        <div class="sched-days" id="sched-days">
+          <div class="loading">Loading schedule…</div>
+        </div>
+        <div class="sched-actions">
+          <button class="action-btn confirm" onclick="saveSchedule(false)">Save Schedule</button>
+          <button class="action-btn complete" onclick="saveSchedule(true)">Save &amp; Notify Subscribers</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Messages View -->
+    <div id="messages-view" style="display:none">
+
+      <!-- Subscriber count -->
+      <div class="msg-sub-bar">
+        <div>
+          <div class="msg-sub-count" id="sub-count">—</div>
+          <div class="msg-sub-hint">Active subscribers — opted in to receive your texts</div>
+        </div>
+      </div>
+
+      <!-- Broadcast composer -->
+      <div class="msg-composer">
+        <div class="section-heading">New Broadcast</div>
+        <textarea id="msg-body" maxlength="160" oninput="updateCharCount()"
+          placeholder="Hey, it's Won! This week's slots are open — book now at washedbywon.com before they fill up."></textarea>
+        <div class="msg-meta">
+          <span id="char-count">0 / 160 chars</span>
+          <span>Standard SMS · 1 credit per subscriber</span>
+        </div>
+        <button class="action-btn confirm" onclick="confirmBroadcast()" style="margin-top:0.9rem">
+          Send Broadcast →
+        </button>
+      </div>
+
+      <!-- Message log -->
+      <div class="msg-log">
+        <div class="section-heading" style="margin-bottom:0.75rem">Recent Broadcasts</div>
+        <div id="msg-log-list"><div class="loading">Loading…</div></div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Confirm broadcast modal -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="confirm-card">
+    <h3>Send SMS Broadcast?</h3>
+    <p id="confirm-preview" style="color:var(--white);font-style:italic"></p>
+    <p id="confirm-count"></p>
+    <div class="confirm-actions">
+      <button class="action-btn cancel" onclick="closeModal()">Cancel</button>
+      <button class="action-btn confirm" onclick="executeBroadcast()">Send It</button>
+    </div>
   </div>
 </div>
 
@@ -483,9 +691,13 @@ async function updateStatus(id, status) {
 function switchTab(tab, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('list-view').style.display     = tab === 'list' ? '' : 'none';
-  document.getElementById('calendar-view').style.display = tab === 'calendar' ? '' : 'none';
+  document.getElementById('list-view').style.display      = tab === 'list'     ? '' : 'none';
+  document.getElementById('calendar-view').style.display  = tab === 'calendar' ? '' : 'none';
+  document.getElementById('schedule-view').style.display  = tab === 'schedule' ? '' : 'none';
+  document.getElementById('messages-view').style.display  = tab === 'messages' ? '' : 'none';
   if (tab === 'calendar') renderCalendar();
+  if (tab === 'schedule') loadScheduleConfig();
+  if (tab === 'messages') loadMessages();
 }
 
 function calPrev() { calDate.setMonth(calDate.getMonth()-1); renderCalendar(); }
@@ -539,6 +751,263 @@ function showToast(msg, type='') {
   t.textContent = msg;
   t.className = `toast show ${type}`;
   setTimeout(() => t.className = 'toast', 2800);
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ══════════════════════════════════════════
+// SCHEDULE TAB
+// ══════════════════════════════════════════
+const TIME_SLOTS = ['9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'];
+let schedWeekOffset = 0;
+let schedData       = {};
+let siteOpen        = true;
+
+async function loadScheduleConfig() {
+  try {
+    const res  = await fetch(`${API}/api/admin/availability`, { headers: { 'x-admin-key': adminKey } });
+    const data = await res.json();
+    siteOpen = data.siteOpen !== false;
+    (data.availability || []).forEach(d => {
+      schedData[d.date] = { open: d.open, slots: d.slots || [] };
+    });
+  } catch { /* use defaults */ }
+  renderSiteStatus();
+  renderScheduleBuilder();
+}
+
+function renderSiteStatus() {
+  const toggle = document.getElementById('status-toggle');
+  const label  = document.getElementById('toggle-label');
+  const hint   = document.getElementById('status-hint');
+  toggle.classList.toggle('on', siteOpen);
+  label.textContent = siteOpen ? 'Open' : 'Closed';
+  label.style.color = siteOpen ? 'var(--green-light)' : 'var(--red-light)';
+  hint.textContent  = siteOpen
+    ? 'Clients can currently book appointments.'
+    : 'Bookings are paused — clients will see no available dates.';
+}
+
+async function toggleSiteStatus() {
+  const next = !siteOpen;
+  try {
+    const res = await fetch(`${API}/api/admin/availability/toggle`, {
+      method: 'POST',
+      headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ open: next })
+    });
+    if (!res.ok) throw new Error();
+    siteOpen = next;
+    renderSiteStatus();
+    showToast(`Bookings ${next ? 'opened' : 'closed'}`, next ? 'success' : '');
+  } catch {
+    showToast('Failed to update booking status', 'error');
+  }
+}
+
+function schedWeek(dir) {
+  schedWeekOffset += dir;
+  renderScheduleBuilder();
+}
+
+function getWeekDates(offset) {
+  const today = new Date();
+  const dow   = today.getDay();
+  const toMon = dow === 0 ? -6 : 1 - dow;
+  const start = new Date(today);
+  start.setDate(today.getDate() + toMon + offset * 7);
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    return d;
+  });
+}
+
+function isoDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function renderScheduleBuilder() {
+  const dates    = getWeekDates(schedWeekOffset);
+  const dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const today    = new Date(); today.setHours(0,0,0,0);
+  const fmt      = { month:'short', day:'numeric' };
+
+  document.getElementById('sched-week-label').textContent =
+    `Week of ${dates[0].toLocaleDateString('en-US', fmt)} – ${dates[6].toLocaleDateString('en-US', fmt)}`;
+
+  document.getElementById('sched-days').innerHTML = dates.map((date, i) => {
+    const iso    = isoDate(date);
+    const cfg    = schedData[iso] || { open: false, slots: [] };
+    const isPast = date < today;
+
+    const slotBtns = TIME_SLOTS.map(t => {
+      const sel = cfg.slots.includes(t);
+      return `<button class="slot-btn${sel?' slot-sel':''}"
+        onclick="toggleSlot('${iso}','${t}')"
+        ${isPast ? 'disabled' : ''}>${t}</button>`;
+    }).join('');
+
+    return `
+      <div class="day-card${cfg.open?' day-open':''}${isPast?' day-past':''}">
+        <div class="day-info">
+          <div class="day-name">${dayNames[i]}</div>
+          <div class="day-date">${date.toLocaleDateString('en-US', fmt)}</div>
+        </div>
+        <button class="day-toggle${cfg.open?' on':''}"
+          onclick="toggleDayOpen('${iso}')"
+          ${isPast ? 'disabled' : ''}>
+          ${cfg.open ? '● Open' : '○ Closed'}
+        </button>
+        <div class="day-slots${cfg.open?'':' hidden'}">${slotBtns}</div>
+      </div>`;
+  }).join('');
+}
+
+function toggleDayOpen(dateStr) {
+  if (!schedData[dateStr]) schedData[dateStr] = { open: false, slots: [] };
+  schedData[dateStr].open = !schedData[dateStr].open;
+  renderScheduleBuilder();
+}
+
+function toggleSlot(dateStr, slot) {
+  if (!schedData[dateStr]) schedData[dateStr] = { open: true, slots: [] };
+  const slots = schedData[dateStr].slots;
+  const idx   = slots.indexOf(slot);
+  if (idx >= 0) slots.splice(idx, 1);
+  else slots.push(slot);
+  renderScheduleBuilder();
+}
+
+async function saveSchedule(notify) {
+  const dates        = getWeekDates(schedWeekOffset);
+  const availability = dates.map(d => {
+    const iso = isoDate(d);
+    const cfg = schedData[iso] || { open: false, slots: [] };
+    return { date: iso, open: cfg.open, slots: cfg.slots };
+  });
+
+  const saveBtn    = document.querySelectorAll('.sched-actions .action-btn')[0];
+  const notifyBtn  = document.querySelectorAll('.sched-actions .action-btn')[1];
+  const activeBtn  = notify ? notifyBtn : saveBtn;
+  if (activeBtn) { activeBtn.textContent = 'Saving…'; activeBtn.disabled = true; }
+
+  try {
+    const res = await fetch(`${API}/api/admin/availability`, {
+      method: 'POST',
+      headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ availability, notify })
+    });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    showToast(
+      notify && data.sent !== undefined
+        ? `Saved! ${data.sent} SMS sent to subscribers.`
+        : 'Schedule saved.',
+      'success'
+    );
+  } catch {
+    showToast('Failed to save schedule', 'error');
+  } finally {
+    if (activeBtn) {
+      activeBtn.textContent = notify ? 'Save & Notify Subscribers' : 'Save Schedule';
+      activeBtn.disabled = false;
+    }
+  }
+}
+
+// ══════════════════════════════════════════
+// MESSAGES TAB
+// ══════════════════════════════════════════
+let subCount = 0;
+
+async function loadMessages() {
+  try {
+    const [subRes, logRes] = await Promise.all([
+      fetch(`${API}/api/admin/subscribers`,    { headers: { 'x-admin-key': adminKey } }),
+      fetch(`${API}/api/admin/messages/log`,   { headers: { 'x-admin-key': adminKey } })
+    ]);
+    const subData = await subRes.json();
+    subCount = subData.count || 0;
+    document.getElementById('sub-count').textContent =
+      `${subCount} active subscriber${subCount !== 1 ? 's' : ''}`;
+
+    const logData = await logRes.json();
+    renderMessageLog(logData.messages || []);
+  } catch {
+    document.getElementById('sub-count').textContent = '— subscribers';
+    document.getElementById('msg-log-list').innerHTML =
+      '<div style="color:var(--muted);font-size:0.8rem;padding:0.5rem 0">Could not load message history.</div>';
+  }
+}
+
+function renderMessageLog(messages) {
+  const el = document.getElementById('msg-log-list');
+  if (!messages.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:0.8rem;padding:0.5rem 0">No broadcasts sent yet.</div>';
+    return;
+  }
+  el.innerHTML = messages.map(m => `
+    <div class="log-entry">
+      <div class="log-body">"${escHtml(m.body)}"</div>
+      <div class="log-meta">
+        <span>${m.recipients_count} sent</span>
+        <span>${formatLogDate(m.sent_at)}</span>
+        <span class="${m.status === 'sent' ? 'log-ok' : 'log-err'}">${escHtml(m.status)}</span>
+      </div>
+    </div>`
+  ).join('');
+}
+
+function updateCharCount() {
+  const len = document.getElementById('msg-body').value.length;
+  document.getElementById('char-count').textContent = `${len} / 160 chars`;
+}
+
+function confirmBroadcast() {
+  const body = document.getElementById('msg-body').value.trim();
+  if (!body)     { showToast('Write a message first.',        'error'); return; }
+  if (!subCount) { showToast('No active subscribers yet.',    'error'); return; }
+  document.getElementById('confirm-preview').textContent = `"${body}"`;
+  document.getElementById('confirm-count').textContent   =
+    `This will send to ${subCount} subscriber${subCount !== 1 ? 's' : ''}.`;
+  document.getElementById('confirm-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('confirm-modal').classList.remove('open');
+}
+
+async function executeBroadcast() {
+  closeModal();
+  const body    = document.getElementById('msg-body').value.trim();
+  const sendBtn = document.querySelector('#messages-view .msg-composer .action-btn');
+  if (sendBtn) { sendBtn.textContent = 'Sending…'; sendBtn.disabled = true; }
+
+  try {
+    const res = await fetch(`${API}/api/admin/messages/broadcast`, {
+      method: 'POST',
+      headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: body })
+    });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    document.getElementById('msg-body').value = '';
+    updateCharCount();
+    showToast(`Sent to ${data.sent} subscriber${data.sent !== 1 ? 's' : ''}!`, 'success');
+    await loadMessages();
+  } catch {
+    showToast('Failed to send broadcast', 'error');
+  } finally {
+    if (sendBtn) { sendBtn.textContent = 'Send Broadcast →'; sendBtn.disabled = false; }
+  }
+}
+
+function formatLogDate(str) {
+  return new Date(str).toLocaleDateString('en-US',
+    { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
 }
 </script>
 </body>

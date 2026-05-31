@@ -469,6 +469,32 @@ footer a:hover{color:var(--white)}
 /* ── SPACERS ── */
 .gap{height:2.5rem}.gap-sm{height:1.4rem}
 
+/* ── NOTIFY SIGNUP ── */
+.notify-section{
+  background:var(--purple-faint);
+  border-top:1px solid rgba(92,31,158,0.35);
+  border-bottom:1px solid rgba(92,31,158,0.35);
+  padding:3.5rem 1.25rem;
+}
+.notify-inner{max-width:480px;margin:0 auto;text-align:center}
+.notify-title{
+  font-family:'Sacramento',cursive;font-size:2.6rem;
+  margin-bottom:0.6rem;text-shadow:2px 2px 0 var(--purple);
+  background:linear-gradient(135deg,#fff 0%,#d4b5f0 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+.notify-sub{font-size:0.82rem;color:var(--muted2);line-height:1.8;margin-bottom:1.75rem}
+.notify-form{display:flex;flex-direction:column;gap:0.75rem}
+.notify-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.notify-consent{font-size:0.6rem;color:var(--muted);line-height:1.65;margin-top:0.1rem;text-align:left}
+.notify-success{
+  padding:1.25rem 1.5rem;
+  background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);
+  border-radius:4px;display:none;
+}
+.notify-success p{font-size:0.85rem;color:#22c55e;line-height:1.7}
+@media(max-width:680px){.notify-row{grid-template-columns:1fr}}
+
 /* ═══════════════════════════════════════
    RESPONSIVE — MOBILE FIRST OVERRIDES
 ════════════════════════════════════════ */
@@ -961,6 +987,37 @@ footer a:hover{color:var(--white)}
 </section>
 
 <!-- ───────────────────────────────────────
+     NOTIFY SIGNUP
+──────────────────────────────────────────── -->
+<div class="divider"><div class="dl"></div><div class="dt">Stay Updated</div><div class="dl"></div></div>
+<div class="notify-section" id="notify">
+  <div class="notify-inner">
+    <div class="section-label reveal" style="justify-content:center">Get notified</div>
+    <h2 class="notify-title reveal">First to Know</h2>
+    <p class="notify-sub reveal">Drop your number and we'll text you the moment new slots open — first come, first served.</p>
+    <div id="notify-form-wrap">
+      <div class="notify-form">
+        <div class="notify-row">
+          <div class="fgrp">
+            <label for="nf-name">Your name</label>
+            <input type="text" id="nf-name" placeholder="Jalen" inputmode="text" autocomplete="given-name"/>
+          </div>
+          <div class="fgrp">
+            <label for="nf-phone">Phone number</label>
+            <input type="tel" id="nf-phone" placeholder="(240) 555-0100" inputmode="tel" autocomplete="tel"/>
+          </div>
+        </div>
+        <button class="btn" onclick="submitNotify()" style="width:100%">Text Me When You Open →</button>
+        <p class="notify-consent">By submitting, you agree to receive SMS updates from Wash By Won. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out at any time.</p>
+      </div>
+    </div>
+    <div class="notify-success" id="notify-success">
+      <p>✓ You're on the list! We'll text you the moment new slots open.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────────────────
      FOOTER
 ──────────────────────────────────────────── -->
 <footer>
@@ -1286,6 +1343,36 @@ async function submitBooking() {
 
 // ── FAQ ───────────────────────────────────────────────────
 function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+// ── NOTIFY SIGNUP ─────────────────────────────────────────
+async function submitNotify() {
+  const nameEl  = document.getElementById('nf-name');
+  const phoneEl = document.getElementById('nf-phone');
+  const name    = nameEl.value.trim();
+  const phone   = phoneEl.value.trim();
+  nameEl.style.borderColor  = name  ? '' : '#ef4444';
+  phoneEl.style.borderColor = phone ? '' : '#ef4444';
+  if (!name || !phone) return;
+
+  const btn = document.querySelector('#notify-form-wrap .btn');
+  if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
+
+  try {
+    await fetch(`${API}/api/notify/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone })
+    });
+    document.getElementById('notify-form-wrap').style.display = 'none';
+    document.getElementById('notify-success').style.display   = 'block';
+  } catch {
+    if (btn) { btn.textContent = 'Text Me When You Open →'; btn.disabled = false; }
+    alert('Something went wrong. Try again in a moment.');
+  }
+}
+['nf-name','nf-phone'].forEach(id => {
+  document.getElementById(id).addEventListener('input', function(){ this.style.borderColor = ''; });
+});
 
 // ── INIT ──────────────────────────────────────────────────
 renderCal();
