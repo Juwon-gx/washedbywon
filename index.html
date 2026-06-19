@@ -839,6 +839,12 @@ footer a:hover{color:var(--white)}
             <label for="notes">Notes (optional)</label>
             <textarea id="notes" placeholder="Pet hair, stains, anything we should know…"></textarea>
           </div>
+          <div class="fgrp full" style="display:flex;align-items:flex-start;gap:0.6rem;margin-top:0.25rem">
+            <input type="checkbox" id="sms_consent" style="margin-top:3px;flex-shrink:0;accent-color:var(--purple);width:15px;height:15px;cursor:pointer"/>
+            <label for="sms_consent" style="font-size:0.62rem;line-height:1.5;color:var(--muted);letter-spacing:0.03em;text-transform:none;cursor:pointer">
+              I consent to receive SMS/text messages from WashedByWon at the phone number provided above regarding my appointment booking and status updates. Message &amp; data rates may apply. Reply STOP to unsubscribe. View our <a href="/privacy.html" style="color:var(--purple-light)">Privacy Policy</a> and <a href="/terms.html" style="color:var(--purple-light)">Terms</a>.
+            </label>
+          </div>
         </div>
         <button class="btn" onclick="submitBooking()" style="width:100%;font-size:0.8rem">
           Request Appointment →
@@ -978,6 +984,9 @@ footer a:hover{color:var(--white)}
     <a href="https://instagram.com/WashedByWon" target="_blank" rel="noopener">@WashedByWon</a>
   </div>
   <div style="font-size:0.65rem;color:var(--border2);margin-top:0.4rem">Baltimore · Silver Spring · Washington DC</div>
+  <div style="font-size:0.63rem;color:var(--muted);margin-top:0.5rem">
+    <a href="/privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms.html">Terms of Service</a>
+  </div>
 </footer>
 
 <!-- Mobile sticky CTA — visible only on phones -->
@@ -1243,6 +1252,10 @@ async function submitBooking() {
   if (!svc)              { alert('Please select a service first.');       return; }
   if (!selDay || !selTime) { alert('Please pick a date and time.');       return; }
   if (!valid)            { alert('Please fill in all required fields.'); return; }
+  if (!document.getElementById('sms_consent').checked) {
+    alert('Please check the SMS consent box to proceed.');
+    return;
+  }
 
   // Disable button while submitting
   const btn = document.querySelector('#main-form button[onclick]');
