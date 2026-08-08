@@ -466,6 +466,23 @@ footer a:hover{color:var(--white)}
   border-top:1px solid var(--purple-bright);touch-action:manipulation
 }
 
+/* ── SERVICE HINT ── */
+.service-hint{
+  background:rgba(92,31,158,0.1);border:1px solid rgba(92,31,158,0.2);
+  border-radius:4px;padding:0.7rem 1.1rem;font-size:0.78rem;color:var(--purple-light);
+  margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem;line-height:1.5;
+}
+.service-hint.hidden{display:none!important}
+
+/* ── BOOKING ERROR ── */
+.booking-error{
+  background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);
+  border-radius:4px;padding:0.85rem 1rem;font-size:0.78rem;color:var(--red-light);
+  margin-top:0.75rem;display:none;line-height:1.65;
+}
+.booking-error.show{display:block}
+.booking-error a{color:var(--red-light);font-weight:600;text-decoration:underline}
+
 /* ── SPACERS ── */
 .gap{height:2.5rem}.gap-sm{height:1.4rem}
 
@@ -804,6 +821,10 @@ footer a:hover{color:var(--white)}
 <section class="section" id="book">
   <div id="main-form">
 
+    <div id="service-hint" class="service-hint">
+      ↑ Pick a service above first — it sets your price.
+    </div>
+
     <div class="sumbar reveal">
       <div class="s-item"><div class="slabel">Service</div><div class="sval" id="ss">—</div></div>
       <div class="s-item"><div class="slabel">Add-ons</div><div class="sval" id="sa">None</div></div>
@@ -866,9 +887,10 @@ footer a:hover{color:var(--white)}
             <textarea id="notes" placeholder="Pet hair, stains, anything we should know…"></textarea>
           </div>
         </div>
-        <button class="btn" onclick="submitBooking()" style="width:100%;font-size:0.8rem">
+        <button id="book-submit" class="btn" onclick="submitBooking()" style="width:100%;font-size:0.8rem">
           Request Appointment →
         </button>
+        <div id="booking-error" class="booking-error"></div>
       </div>
     </div>
 
@@ -886,8 +908,8 @@ footer a:hover{color:var(--white)}
 
   <div class="success" id="success">
     <div class="sicon">✓</div>
-    <h2>You're on the list!</h2>
-    <p>Thanks for booking with WashedByWon. We'll reach out to confirm your appointment. Follow us for before & afters.</p>
+    <h2>Booking Requested!</h2>
+    <p>Won will reach out shortly to confirm your appointment. See you soon — follow us for before & afters.</p>
     <br>
     <a href="https://instagram.com/WashedByWon" class="btn" target="_blank" rel="noopener" style="margin-top:0.5rem">
       Follow @WashedByWon
@@ -1103,12 +1125,20 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.stagger').forEach
   }
 });
 
+// ── FETCH WITH TIMEOUT ────────────────────────────────────
+function fetchWithTimeout(url, opts, ms) {
+  const ctrl = new AbortController();
+  const id   = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(id));
+}
+
 // ── SERVICE SELECTION ─────────────────────────────────────
 function selectService(el, name) {
   document.querySelectorAll('.scard').forEach(c => c.classList.remove('sel'));
   el.classList.add('sel');
   svc = name;
   updateSummary();
+  document.getElementById('service-hint').classList.add('hidden');
   setTimeout(() => document.getElementById('book').scrollIntoView({ behavior: 'smooth' }), 300);
 }
 
@@ -1164,7 +1194,7 @@ async function renderCal() {
   let availSet   = new Set();
 
   try {
-    const res  = await fetch(`${API}/api/availability?month=${monthStr}`);
+    const res  = await fetchWithTimeout(`${API}/api/availability?month=${monthStr}`, {}, 10000);
     const data = await res.json();
     availSet = new Set(data.availableDates || []);
   } catch (_) {
@@ -1226,7 +1256,7 @@ async function selectDay(el, dateStr) {
     'padding:0.5rem 0;letter-spacing:0.1em">Loading times…</div>';
 
   try {
-    const res  = await fetch(`${API}/api/availability/slots?date=${dateStr}`);
+    const res  = await fetchWithTimeout(`${API}/api/availability/slots?date=${dateStr}`, {}, 10000);
     const data = await res.json();
     availableTimesForDay = data.slots || [];
   } catch (_) {
@@ -1276,15 +1306,17 @@ function selectSlot(el, t) {
 
 // ── FORM SUBMIT ───────────────────────────────────────────
 async function submitBooking() {
-  const fn   = document.getElementById('fn').value.trim();
-  const ln   = document.getElementById('ln').value.trim();
-  const ph   = document.getElementById('ph').value.trim();
-  const em   = document.getElementById('em').value.trim();
-  const vs   = document.getElementById('vs').value;
-  const addr = document.getElementById('addr').value.trim();
+  const fn    = document.getElementById('fn').value.trim();
+  const ln    = document.getElementById('ln').value.trim();
+  const ph    = document.getElementById('ph').value.trim();
+  const em    = document.getElementById('em').value.trim();
+  const vs    = document.getElementById('vs').value;
+  const addr  = document.getElementById('addr').value.trim();
   const notes = document.getElementById('notes').value.trim();
+  const errEl = document.getElementById('booking-error');
 
-  // Validate required fields
+  errEl.classList.remove('show');
+
   const required = [
     { id: 'fn', val: fn }, { id: 'ln', val: ln },
     { id: 'ph', val: ph }, { id: 'vs', val: vs },
@@ -1297,19 +1329,32 @@ async function submitBooking() {
     el.style.borderColor = ok ? '' : '#ef4444';
     if (!ok) valid = false;
   });
-  if (!svc)              { alert('Please select a service first.');       return; }
-  if (!selDay || !selTime) { alert('Please pick a date and time.');       return; }
-  if (!valid)            { alert('Please fill in all required fields.'); return; }
 
-  // Disable button while submitting
-  const btn = document.querySelector('#main-form button[onclick]');
-  if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
+  if (!svc) {
+    errEl.innerHTML = '↑ Scroll up and select a service — it sets your price.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (!selDay || !selTime) {
+    errEl.innerHTML = 'Pick a date and a time slot from the calendar on the left.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (!valid) {
+    errEl.innerHTML = 'Fill in all highlighted fields above.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const btn = document.getElementById('book-submit');
+  btn.textContent = 'Sending…';
+  btn.disabled    = true;
 
   const basePrice = (svc && vs && prices[svc]?.[vs]) ? prices[svc][vs] : 0;
   const total     = basePrice + addTotal;
 
   try {
-    const res = await fetch(`${API}/api/bookings`, {
+    const res = await fetchWithTimeout(`${API}/api/bookings`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1319,25 +1364,30 @@ async function submitBooking() {
         vehicleSize: vs, date: selDay, time: selTime,
         notes: notes || null, total
       })
-    });
+    }, 25000);
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Booking failed.');
 
-    // Success
     document.getElementById('main-form').style.display = 'none';
     document.getElementById('success').style.display   = 'block';
     window.scrollTo({ top: document.getElementById('book').offsetTop - 70, behavior: 'smooth' });
   } catch (err) {
-    alert(err.message || 'Something went wrong. Please DM us on Instagram to book.');
-    if (btn) { btn.textContent = 'Request Appointment →'; btn.disabled = false; }
+    const isTimeout = err.name === 'AbortError';
+    errEl.innerHTML = isTimeout
+      ? `The server took too long to respond — try again in a moment, or <a href="https://instagram.com/WashedByWon" target="_blank" rel="noopener">DM @WashedByWon on Instagram</a> to book directly.`
+      : `${err.message || 'Something went wrong.'} <a href="https://instagram.com/WashedByWon" target="_blank" rel="noopener">DM us on Instagram</a> to book directly.`;
+    errEl.classList.add('show');
+    btn.textContent = 'Request Appointment →';
+    btn.disabled    = false;
   }
 }
 
-// Clear error highlight on input
+// Clear field error highlight + inline error on any input
 ['fn','ln','ph','em','vs','addr'].forEach(id => {
   document.getElementById(id).addEventListener('input', function() {
     this.style.borderColor = '';
+    document.getElementById('booking-error').classList.remove('show');
   });
 });
 
