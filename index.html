@@ -1,18 +1,1654 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="WashedByWon — Premium mobile car detailing serving Baltimore, Silver Spring, and Washington DC. Book online in under 2 minutes." />
-    <title>Washed By Won — Premium Mobile Detailing · DMV Area</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="./assets/index-CeZBVJUm.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-Bv6o2zFJ.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Washed By Won — Mobile Detailing · DMV Area</title>
+
+<!-- SEO & Social -->
+<meta name="description" content="Premium mobile car detailing serving Baltimore, Silver Spring & Washington DC. Interior, exterior, and full detail packages. Book online.">
+<meta name="keywords" content="mobile detailing, car detailing, Baltimore detailing, DMV detailing, Silver Spring detailing, Washington DC detailing, WashedByWon">
+<meta property="og:title" content="Washed By Won — Mobile Detailing · DMV Area">
+<meta property="og:description" content="Premium mobile car detailing brought directly to you. Baltimore · Silver Spring · DC.">
+<meta property="og:type" content="website">
+
+<!-- Local Business Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Washed By Won",
+  "description": "Premium mobile car detailing serving the DMV area",
+  "areaServed": ["Baltimore City","Baltimore County","Silver Spring","Montgomery County","Washington DC"],
+  "serviceType": "Mobile Car Detailing",
+  "sameAs": ["https://instagram.com/WashedByWon"]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sacramento&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* Remove tap highlight flash on iOS */
+*{-webkit-tap-highlight-color:transparent}
+/* Remove 300ms delay on tappable elements */
+button,a,[onclick]{touch-action:manipulation}
+
+:root{
+  --black:#080808;
+  --white:#f5f5f5;
+  --purple:#5c1f9e;
+  --purple-bright:#7b2fd4;
+  --purple-light:#a066e0;
+  --purple-faint:#1a0a2e;
+  --gray:#111111;
+  --mid:#1a1a1a;
+  --muted:#555;
+  --muted2:#888;
+  --border:#1f1f1f;
+  --border2:#2a2a2a;
+  /* Safe minimum touch target */
+  --tap:44px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--black);color:var(--white);
+  min-height:100vh;overflow-x:hidden;
+  /* prevent content from hiding behind sticky CTA on mobile */
+  padding-bottom:0;
+}
+
+/* ── SCROLL ANIMATIONS ──
+   Only applied after JS adds .js-anim to <body>.
+   Without JS (or on slow/broken environments) all content
+   remains fully visible at full opacity — no blank pages. */
+body.js-anim .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.55s ease,transform 0.55s ease}
+body.js-anim .reveal.visible{opacity:1;transform:none}
+body.js-anim .reveal-left{opacity:0;transform:translateX(-28px);transition:opacity 0.55s ease,transform 0.55s ease}
+body.js-anim .reveal-left.visible{opacity:1;transform:none}
+body.js-anim .reveal-right{opacity:0;transform:translateX(28px);transition:opacity 0.55s ease,transform 0.55s ease}
+body.js-anim .reveal-right.visible{opacity:1;transform:none}
+body.js-anim .stagger>*{opacity:0;transform:translateY(20px);transition:opacity 0.45s ease,transform 0.45s ease}
+body.js-anim .stagger.visible>*:nth-child(1){opacity:1;transform:none;transition-delay:0ms}
+body.js-anim .stagger.visible>*:nth-child(2){opacity:1;transform:none;transition-delay:80ms}
+body.js-anim .stagger.visible>*:nth-child(3){opacity:1;transform:none;transition-delay:160ms}
+body.js-anim .stagger.visible>*:nth-child(4){opacity:1;transform:none;transition-delay:240ms}
+
+/* ── NAV ── */
+nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1rem 1.25rem;border-bottom:1px solid var(--border);
+  position:sticky;top:0;background:rgba(8,8,8,0.95);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  z-index:200;transition:box-shadow 0.3s;
+  min-height:60px
+}
+nav.scrolled{box-shadow:0 4px 30px rgba(92,31,158,0.15)}
+.logo-text{font-family:'Sacramento',cursive;font-size:1.9rem;color:var(--white);text-shadow:2px 2px 0 var(--purple);letter-spacing:0.02em}
+.nav-links{display:flex;gap:1.4rem;align-items:center}
+.nav-links a{color:var(--muted2);text-decoration:none;font-size:0.78rem;letter-spacing:0.06em;transition:color 0.2s}
+.nav-links a:hover{color:var(--white)}
+.nav-cta{
+  background:var(--purple);color:var(--white)!important;
+  padding:0.4rem 1.1rem;border-radius:2px;font-weight:500;
+  transition:background 0.2s!important;min-height:var(--tap);
+  display:inline-flex;align-items:center
+}
+.nav-cta:hover{background:var(--purple-bright)!important}
+
+/* Hamburger */
+.ham{
+  display:none;flex-direction:column;gap:5px;
+  cursor:pointer;padding:10px;margin:-10px;z-index:210;
+  /* large tap area */
+  min-width:var(--tap);min-height:var(--tap);
+  align-items:center;justify-content:center
+}
+.ham span{display:block;width:22px;height:2px;background:var(--white);transition:all 0.3s;border-radius:2px}
+.ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.ham.open span:nth-child(2){opacity:0}
+.ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{
+  display:none;position:fixed;inset:0;background:var(--black);z-index:190;
+  flex-direction:column;align-items:center;justify-content:center;gap:2rem;
+  opacity:0;transition:opacity 0.25s;overflow-y:auto
+}
+.mobile-menu.open{display:flex;opacity:1}
+.mobile-menu a{
+  color:var(--white);text-decoration:none;
+  font-size:1.55rem;font-family:'Sacramento',cursive;letter-spacing:0.05em;
+  min-height:var(--tap);display:flex;align-items:center
+}
+.mobile-menu .m-cta{
+  background:var(--purple);color:var(--white);
+  padding:0.9rem 2.5rem;border-radius:2px;
+  font-family:'DM Sans',sans-serif;font-size:0.85rem;
+  font-weight:500;letter-spacing:0.1em;text-transform:uppercase;
+  margin-top:0.5rem;min-height:var(--tap)
+}
+
+/* ── HERO ── */
+.hero{
+  position:relative;overflow:hidden;
+  padding:3.5rem 1.25rem 3rem;max-width:1000px;margin:0 auto;
+  display:grid;grid-template-columns:1fr auto;gap:3rem;align-items:center
+}
+.hero::before{
+  content:'';position:absolute;top:-40%;right:-10%;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(92,31,158,0.18) 0%,transparent 70%);
+  pointer-events:none
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-size:0.64rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--purple-light);border:1px solid var(--purple);
+  padding:0.3rem 0.85rem;border-radius:2px;margin-bottom:1.2rem
+}
+.hero-tag::before{content:'★';font-size:0.6rem}
+h1{
+  font-family:'Sacramento',cursive;
+  font-size:clamp(3.5rem,12vw,6rem);line-height:0.95;
+  text-shadow:3px 3px 0 var(--purple);margin-bottom:1rem;
+  background:linear-gradient(135deg,#fff 0%,#d4b5f0 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+.hero p{font-size:0.88rem;color:var(--muted2);line-height:1.85;margin-bottom:1.75rem;max-width:400px}
+.hero-actions{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap}
+.btn{
+  background:var(--purple);color:var(--white);
+  padding:0 1.8rem;height:var(--tap);font-size:0.78rem;font-weight:500;
+  letter-spacing:0.1em;text-transform:uppercase;border:none;
+  cursor:pointer;border-radius:2px;
+  transition:background 0.2s,transform 0.15s,box-shadow 0.2s;
+  text-decoration:none;display:inline-flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;white-space:nowrap;touch-action:manipulation
+}
+.btn::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.08),transparent);
+  pointer-events:none
+}
+.btn:hover{background:var(--purple-bright);box-shadow:0 6px 25px rgba(92,31,158,0.4)}
+.btn-outline{
+  background:transparent;border:1px solid var(--purple);color:var(--purple-light);
+  padding:0 1.8rem;height:var(--tap);font-size:0.78rem;font-weight:500;
+  letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;
+  transition:all 0.2s;text-decoration:none;
+  display:inline-flex;align-items:center;justify-content:center;
+  white-space:nowrap;touch-action:manipulation
+}
+.btn-outline:hover{background:var(--purple-faint);border-color:var(--purple-bright)}
+.ig-link{
+  color:var(--muted2);font-size:0.8rem;text-decoration:none;
+  display:inline-flex;align-items:center;gap:0.45rem;transition:color 0.2s;
+  min-height:var(--tap)
+}
+.ig-link:hover{color:var(--purple-light)}
+.logo-col{display:flex;justify-content:center;align-items:center}
+
+/* ── AREA STRIP ── */
+.area-strip{
+  background:var(--purple-faint);border-top:1px solid rgba(92,31,158,0.5);
+  border-bottom:1px solid rgba(92,31,158,0.5);padding:0.75rem 1.25rem;
+  text-align:center;font-size:0.72rem;letter-spacing:0.1em;
+  color:rgba(160,102,224,0.7);display:flex;justify-content:center;
+  align-items:center;gap:0.6rem;flex-wrap:wrap
+}
+.area-strip .dot{color:var(--purple)}
+.area-strip span{color:var(--white);font-weight:500}
+
+/* ── STATS BAR ── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--gray);border-bottom:1px solid var(--border)}
+.stat{
+  padding:1.4rem 0.75rem;text-align:center;border-right:1px solid var(--border);
+  transition:background 0.2s
+}
+.stat:last-child{border-right:none}
+.stat:hover{background:var(--mid)}
+.stat-num{font-size:1.5rem;font-weight:600;color:var(--purple-light);line-height:1;margin-bottom:0.3rem}
+.stat-label{font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);line-height:1.4}
+
+/* ── HOW IT WORKS ── */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--border)}
+.step{
+  background:var(--gray);padding:1.75rem 1.5rem;
+  border-right:1px solid var(--border);transition:background 0.2s
+}
+.step:last-child{border-right:none}
+.step:hover{background:var(--mid)}
+.step-num{font-family:'Sacramento',cursive;font-size:3.2rem;color:var(--purple);opacity:0.4;line-height:1;margin-bottom:0.5rem}
+.step h3{font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem}
+.step p{font-size:0.78rem;color:var(--muted2);line-height:1.8}
+
+/* ── GALLERY ── */
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.gcard{position:relative;overflow:hidden;aspect-ratio:4/3;background:var(--mid);cursor:pointer}
+.gcard img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s,filter 0.3s;filter:brightness(0.85)}
+.gcard:hover img{transform:scale(1.04);filter:brightness(1)}
+.gcard-overlay{
+  position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);
+  opacity:0;transition:opacity 0.3s;display:flex;align-items:flex-end;padding:1rem
+}
+.gcard:hover .gcard-overlay{opacity:1}
+.gcard-tag{font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--purple-light)}
+.gcard-ph{
+  width:100%;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:0.5rem;opacity:0.18
+}
+.gcard-ph-icon{font-size:2.2rem}
+.gcard-ph-text{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase}
+
+/* ── LAYOUT UTILITIES ── */
+.divider{display:flex;align-items:center;gap:1rem;padding:0 1.25rem;max-width:1000px;margin:0 auto 2.5rem}
+.dl{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--border),transparent)}
+.dt{font-size:0.6rem;letter-spacing:0.22em;color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.section{max-width:1000px;margin:0 auto;padding:0 1.25rem 3.5rem}
+.section-label{
+  font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--purple-light);margin-bottom:1.1rem;
+  display:flex;align-items:center;gap:0.5rem
+}
+.section-label::before{content:'';display:inline-block;width:14px;height:1px;background:var(--purple)}
+
+/* ── SERVICES ── */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.scard{
+  background:var(--gray);padding:1.5rem;cursor:pointer;position:relative;
+  transition:background 0.2s;
+  /* min touch target already covered by padding */
+}
+.scard::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--purple);transform:scaleX(0);transition:transform 0.25s;transform-origin:left}
+.scard:hover{background:var(--mid)}
+.scard:hover::after,.scard.sel::after{transform:scaleX(1)}
+.scard.sel{background:var(--mid);outline:2px solid var(--purple);outline-offset:-2px}
+.scard h3{font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem;color:var(--white)}
+.pr{display:flex;justify-content:space-between;font-size:0.74rem;color:var(--muted);padding:0.32rem 0;border-bottom:1px solid var(--border2)}
+.pr:last-child{border-bottom:none}
+.pr span:last-child{color:var(--purple-light);font-weight:500}
+.chk{
+  position:absolute;top:0.85rem;right:0.85rem;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--purple);display:none;align-items:center;justify-content:center;
+  font-size:9px;box-shadow:0 0 12px rgba(92,31,158,0.6)
+}
+.scard.sel .chk{display:flex}
+.btag{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--purple),var(--purple-bright));
+  color:#fff;font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;
+  padding:0.18rem 0.6rem;margin-bottom:0.6rem;border-radius:2px
+}
+.orig{color:var(--muted);font-size:0.64rem;text-decoration:line-through;margin-left:4px;opacity:0.6}
+
+/* ── ADD-ONS ── */
+.addon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:1px}
+.acard{
+  background:var(--gray);padding:1rem 1.3rem;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:background 0.2s;gap:0.5rem;
+  min-height:var(--tap)
+}
+.acard:hover{background:var(--mid)}
+.acard.sel{background:var(--mid);outline:2px solid var(--purple);outline-offset:-2px}
+.aname{font-size:0.8rem;font-weight:500}
+.asub{font-size:0.63rem;color:var(--muted);margin-top:2px}
+.aprice{font-size:0.82rem;color:var(--purple-light);font-weight:600;flex-shrink:0}
+
+/* ── BOOKING / CALENDAR ── */
+.booking-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.cal-box{background:var(--gray);border:1px solid var(--border);padding:1.4rem}
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem}
+.cal-month{font-size:0.9rem;font-weight:500}
+.cal-nav{
+  background:none;border:1px solid var(--border2);color:var(--white);
+  padding:0;cursor:pointer;border-radius:2px;font-size:0.85rem;
+  transition:background 0.2s,border-color 0.2s;
+  width:var(--tap);height:var(--tap);display:flex;align-items:center;justify-content:center;
+  touch-action:manipulation
+}
+.cal-nav:hover{background:var(--mid);border-color:var(--purple)}
+.cdh{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:5px}
+.cdl{text-align:center;font-size:0.56rem;letter-spacing:0.08em;color:var(--muted);text-transform:uppercase;padding:0.2rem 0}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cday{
+  /* Minimum 36px so 7 columns still fit; hover area is generous */
+  aspect-ratio:1;min-height:36px;display:flex;align-items:center;justify-content:center;
+  font-size:0.7rem;border-radius:2px;color:var(--muted)
+}
+.cday.past{color:#1e1e1e}
+.cday.avail{
+  background:rgba(92,31,158,0.12);color:var(--purple-light);cursor:pointer;
+  border:1px solid rgba(92,31,158,0.35);transition:all 0.15s;
+  touch-action:manipulation
+}
+.cday.avail:hover,.cday.avail:active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.cday.selday{background:var(--purple)!important;color:#fff!important;font-weight:600;box-shadow:0 0 12px rgba(92,31,158,0.5)}
+.cday.unavail{color:#1e1e1e}
+.tslots{margin-top:1rem}
+.tlabel{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.slot{
+  background:var(--gray);border:1px solid var(--border);color:var(--muted);
+  padding:0;height:36px;text-align:center;font-size:0.68rem;border-radius:2px;
+  cursor:default;display:flex;align-items:center;justify-content:center
+}
+.slot.open{
+  color:var(--purple-light);border-color:rgba(92,31,158,0.4);cursor:pointer;
+  transition:all 0.15s;touch-action:manipulation
+}
+.slot.open:hover,.slot.open:active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.slot.selslot{background:var(--purple);color:#fff;border-color:var(--purple);font-weight:500}
+
+/* ── BOOKING FORM ── */
+.form-box{background:var(--gray);border:1px solid var(--border);padding:1.4rem}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-bottom:1rem}
+.fgrp{display:flex;flex-direction:column;gap:0.35rem}
+.fgrp.full{grid-column:1/-1}
+label{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
+
+/* CRITICAL for iOS: 16px minimum prevents auto-zoom on focus */
+input,select,textarea{
+  background:rgba(0,0,0,0.5);border:1px solid var(--border2);color:var(--white);
+  padding:0 0.9rem;height:var(--tap);
+  font-family:'DM Sans',sans-serif;
+  font-size:16px; /* prevents iOS zoom on focus */
+  border-radius:2px;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;width:100%;
+  -webkit-appearance:none;appearance:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(92,31,158,0.12)}
+input::placeholder,textarea::placeholder{color:var(--muted);font-size:14px}
+textarea{resize:vertical;min-height:72px;height:auto;padding:0.75rem 0.9rem}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23555' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.9rem center;padding-right:2.5rem}
+select option{background:#111;font-size:16px}
+
+/* ── SUMMARY BAR ── */
+.sumbar{
+  background:var(--purple-faint);border:1px solid rgba(92,31,158,0.4);
+  padding:1rem 1.2rem;display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:1.3rem;flex-wrap:wrap;gap:0.75rem;
+  border-radius:2px
+}
+.s-item{min-width:110px}
+.slabel{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--purple-light);margin-bottom:0.2rem}
+.sval{font-size:0.88rem;font-weight:500;color:var(--white)}
+.sval.price{color:var(--purple-light);font-size:1.25rem;font-weight:600}
+
+/* ── PAYMENT ── */
+.paystrip{
+  background:var(--gray);border:1px solid var(--border);
+  padding:1.1rem 1.3rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1px
+}
+.plabel{font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);flex-shrink:0}
+.pbadges{display:flex;gap:0.4rem;flex-wrap:wrap}
+.pbadge{
+  background:var(--mid);border:1px solid var(--border2);color:var(--muted2);
+  font-size:0.68rem;padding:0.28rem 0.7rem;border-radius:2px;transition:color 0.2s,border-color 0.2s
+}
+
+/* ── TESTIMONIALS ── */
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.tcard{background:var(--gray);padding:1.5rem;position:relative;overflow:hidden;transition:background 0.2s}
+.tcard:hover{background:var(--mid)}
+.tcard::before{content:'"';position:absolute;top:-0.5rem;left:1rem;font-size:6rem;color:var(--purple);opacity:0.06;font-family:Georgia,serif;line-height:1}
+.stars{color:var(--purple-light);font-size:0.72rem;margin-bottom:0.8rem;letter-spacing:0.15em}
+.tcard p{font-size:0.8rem;color:#888;line-height:1.85;margin-bottom:0.9rem;font-style:italic;position:relative}
+.tauthor{font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)}
+.tauthor span{color:var(--purple-light)}
+.tplaceholder{font-size:0.66rem;color:var(--muted);margin-top:0.75rem;font-style:italic;text-align:center;padding:0.5rem}
+
+/* ── FAQ ── */
+.faqlist{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border)}
+.faqitem{background:var(--gray)}
+.faqq{
+  padding:1rem 1.4rem;font-size:0.82rem;font-weight:500;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:background 0.2s;user-select:none;gap:1rem;
+  min-height:var(--tap);touch-action:manipulation
+}
+.faqq:hover,.faqq:active{background:var(--mid)}
+.faqicon{
+  width:22px;height:22px;flex-shrink:0;border-radius:50%;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--purple-light);font-size:0.9rem;transition:transform 0.25s,background 0.2s,border-color 0.2s
+}
+.faqitem.open .faqicon{transform:rotate(45deg);background:var(--purple);border-color:var(--purple)}
+.faqa{
+  max-height:0;overflow:hidden;transition:max-height 0.3s ease,padding 0.2s;
+  font-size:0.78rem;color:var(--muted2);line-height:1.85;padding:0 1.4rem
+}
+.faqitem.open .faqa{max-height:220px;padding:0 1.4rem 1rem}
+
+/* ── CONTACT ── */
+.cgrid2{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.ccard{background:var(--gray);padding:1.5rem;text-align:center;transition:background 0.2s}
+.ccard:hover{background:var(--mid)}
+.ccard a{color:var(--purple-light);text-decoration:none;font-size:0.85rem;display:block;margin-top:0.4rem;transition:color 0.2s;min-height:var(--tap);display:flex;align-items:center;justify-content:center}
+.ccard a:hover{color:var(--white)}
+.clabel{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted)}
+.cicon{font-size:1.3rem;margin-bottom:0.4rem}
+
+/* ── SUCCESS ── */
+.success{display:none;text-align:center;padding:4.5rem 1.5rem}
+.sicon{
+  width:60px;height:60px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--purple-bright));
+  display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;
+  font-size:1.3rem;box-shadow:0 0 30px rgba(92,31,158,0.4)
+}
+.success h2{font-family:'Sacramento',cursive;font-size:2.8rem;margin-bottom:0.8rem;text-shadow:2px 2px 0 var(--purple)}
+.success p{color:var(--muted2);max-width:360px;margin:0 auto;line-height:1.85}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);padding:1.75rem 1.25rem;text-align:center;font-size:0.74rem;color:var(--muted)}
+footer a{color:var(--purple-light);text-decoration:none;transition:color 0.2s}
+footer a:hover{color:var(--white)}
+.footer-logo{font-family:'Sacramento',cursive;font-size:1.8rem;color:var(--white);text-shadow:2px 2px 0 var(--purple);margin-bottom:0.4rem}
+.footer-social{display:flex;justify-content:center;gap:1rem;margin:0.6rem 0}
+.footer-social a{
+  color:var(--muted);border:1px solid var(--border2);
+  width:var(--tap);height:var(--tap);border-radius:2px;
+  display:flex;align-items:center;justify-content:center;transition:all 0.2s
+}
+.footer-social a:hover{color:var(--white);border-color:var(--purple);background:var(--purple-faint)}
+
+/* ── MOBILE STICKY CTA ── */
+.sticky-cta{
+  display:none;position:fixed;bottom:0;left:0;right:0;
+  background:var(--purple);color:var(--white);text-align:center;
+  padding:0;height:52px;line-height:52px;
+  font-size:0.8rem;font-weight:500;letter-spacing:0.1em;
+  text-transform:uppercase;text-decoration:none;z-index:150;
+  border-top:1px solid var(--purple-bright);touch-action:manipulation
+}
+
+/* ── SERVICE HINT ── */
+.service-hint{
+  background:rgba(92,31,158,0.1);border:1px solid rgba(92,31,158,0.2);
+  border-radius:4px;padding:0.7rem 1.1rem;font-size:0.78rem;color:var(--purple-light);
+  margin-bottom:1.25rem;display:flex;align-items:center;gap:0.5rem;line-height:1.5;
+}
+.service-hint.hidden{display:none!important}
+
+/* ── BOOKING ERROR ── */
+.booking-error{
+  background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);
+  border-radius:4px;padding:0.85rem 1rem;font-size:0.78rem;color:var(--red-light);
+  margin-top:0.75rem;display:none;line-height:1.65;
+}
+.booking-error.show{display:block}
+.booking-error a{color:var(--red-light);font-weight:600;text-decoration:underline}
+
+/* ── SPACERS ── */
+.gap{height:2.5rem}.gap-sm{height:1.4rem}
+
+/* ── NOTIFY SIGNUP ── */
+.notify-section{
+  background:var(--purple-faint);
+  border-top:1px solid rgba(92,31,158,0.35);
+  border-bottom:1px solid rgba(92,31,158,0.35);
+  padding:3.5rem 1.25rem;
+}
+.notify-inner{max-width:480px;margin:0 auto;text-align:center}
+.notify-title{
+  font-family:'Sacramento',cursive;font-size:2.6rem;
+  margin-bottom:0.6rem;text-shadow:2px 2px 0 var(--purple);
+  background:linear-gradient(135deg,#fff 0%,#d4b5f0 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text
+}
+.notify-sub{font-size:0.82rem;color:var(--muted2);line-height:1.8;margin-bottom:1.75rem}
+.notify-form{display:flex;flex-direction:column;gap:0.75rem}
+.notify-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+.notify-consent{font-size:0.6rem;color:var(--muted);line-height:1.65;margin-top:0.1rem;text-align:left}
+.notify-success{
+  padding:1.25rem 1.5rem;
+  background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);
+  border-radius:4px;display:none;
+}
+.notify-success p{font-size:0.85rem;color:#22c55e;line-height:1.7}
+@media(max-width:680px){.notify-row{grid-template-columns:1fr}}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE — MOBILE FIRST OVERRIDES
+════════════════════════════════════════ */
+
+/* Tablet */
+@media(max-width:900px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(3){border-top:1px solid var(--border)}
+}
+
+/* Mobile (≤ 680px) */
+@media(max-width:680px){
+  /* Nav */
+  .nav-links{display:none}
+  .ham{display:flex}
+
+  /* Hero */
+  .hero{
+    grid-template-columns:1fr;gap:0;
+    padding:2.5rem 1.25rem 2.5rem
+  }
+  .logo-col{display:none}
+  .hero p{max-width:100%}
+  .hero-actions{gap:0.6rem}
+  /* Stack buttons vertically on very small screens */
+  @media(max-width:400px){
+    .hero-actions{flex-direction:column;align-items:flex-start}
+    .btn,.btn-outline{width:100%;justify-content:center}
+  }
+
+  /* Stats: 2×2 */
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(odd){border-right:1px solid var(--border)}
+  .stat:nth-child(even){border-right:none}
+  .stat:nth-child(3),.stat:nth-child(4){border-top:1px solid var(--border)}
+
+  /* How it works */
+  .steps{grid-template-columns:1fr}
+  .step{border-right:none;border-bottom:1px solid var(--border)}
+  .step:last-child{border-bottom:none}
+
+  /* Gallery: 2 columns (hide 3rd) */
+  .gallery-grid{grid-template-columns:1fr 1fr}
+  .gallery-grid .gcard:nth-child(3){display:none}
+
+  /* Services: 1 column */
+  .services-grid{grid-template-columns:1fr}
+
+  /* Add-ons: 1 column */
+  .addon-grid{grid-template-columns:1fr}
+
+  /* Summary bar: 2×2 grid */
+  .sumbar{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+
+  /* Booking: 1 column */
+  .booking-layout{grid-template-columns:1fr}
+
+  /* Form: 1 column */
+  .fg{grid-template-columns:1fr}
+  .fgrp.full{grid-column:1/-1}
+
+  /* Time slots: 3 columns (more tap-friendly) */
+  .sgrid{grid-template-columns:repeat(3,1fr)}
+  .slot{height:40px;font-size:0.72rem}
+
+  /* Testimonials: 1 column */
+  .tgrid{grid-template-columns:1fr}
+  .tplaceholder{grid-column:1/-1}
+
+  /* Contact: 1 column */
+  .cgrid2{grid-template-columns:1fr}
+
+  /* Show sticky CTA + add body bottom padding so content isn't hidden */
+  .sticky-cta{display:block}
+  body{padding-bottom:52px}
+
+  /* Dividers */
+  .divider{padding:0 1.25rem}
+}
+
+/* Very small phones (≤ 360px) */
+@media(max-width:360px){
+  .logo-text{font-size:1.6rem}
+  h1{font-size:3rem}
+  .cal-box{padding:1rem}
+  .sgrid{grid-template-columns:repeat(2,1fr)}
+  .stat-num{font-size:1.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ───────────────────────────────────────
+     MOBILE MENU (full-screen overlay)
+──────────────────────────────────────────── -->
+<div class="mobile-menu" id="mobMenu" role="dialog" aria-label="Navigation menu">
+  <a href="#services" onclick="closeMob()">Services</a>
+  <a href="#book"     onclick="closeMob()">Book</a>
+  <a href="#gallery"  onclick="closeMob()">Gallery</a>
+  <a href="#reviews"  onclick="closeMob()">Reviews</a>
+  <a href="#faq"      onclick="closeMob()">FAQ</a>
+  <a href="#contact"  onclick="closeMob()">Contact</a>
+  <a href="#book"     onclick="closeMob()" class="m-cta">Book a Detail →</a>
+</div>
+
+<!-- ───────────────────────────────────────
+     NAV
+──────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="logo-text">Washed By Won</div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#book">Book</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Contact</a>
+    <a href="#book" class="nav-cta">Book Now</a>
+  </div>
+  <div class="ham" id="ham" onclick="toggleMob()" role="button" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ───────────────────────────────────────
+     HERO
+──────────────────────────────────────────── -->
+<section class="hero">
+  <div>
+    <div class="hero-tag reveal">Mobile Detailing · DMV Area</div>
+    <h1 class="reveal" style="transition-delay:60ms">Washed<br>By Won</h1>
+    <p class="reveal" style="transition-delay:120ms">Premium interior & exterior detailing brought directly to you. Serving Baltimore, Silver Spring & DC. Your car deserves it.</p>
+    <div class="hero-actions reveal" style="transition-delay:180ms">
+      <button class="btn" onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})">Book a Detail</button>
+      <a href="#services" class="btn-outline">View Pricing</a>
+      <a href="https://instagram.com/WashedByWon" class="ig-link" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>
+        @WashedByWon
+      </a>
+    </div>
+  </div>
+  <div class="logo-col reveal-right">
+    <svg viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg" width="260" height="260" aria-label="Washed By Won logo">
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#7b2fd4" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#080808" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="420" height="420" fill="#080808" rx="16"/>
+      <ellipse cx="210" cy="278" rx="160" ry="140" fill="url(#glow)"/>
+      <text x="210" y="108" font-family="Sacramento,cursive" font-size="72" fill="white"
+        text-anchor="middle" stroke="#5c1f9e" stroke-width="7"
+        paint-order="stroke" letter-spacing="1">Washed By Won</text>
+      <text x="76"  y="174" font-size="28" fill="#7b2fd4" text-anchor="middle">★</text>
+      <text x="344" y="174" font-size="28" fill="#7b2fd4" text-anchor="middle">★</text>
+      <circle cx="210" cy="278" r="118" fill="#0d0020" stroke="#7b2fd4" stroke-width="7"/>
+      <circle cx="210" cy="278" r="98" fill="none" stroke="white" stroke-width="2.5" stroke-dasharray="4 3"/>
+      <text x="210" y="263" font-family="Sacramento,cursive" font-size="62" fill="white"
+        text-anchor="middle" stroke="#5c1f9e" stroke-width="6" paint-order="stroke">Wb</text>
+      <text x="210" y="320" font-family="Sacramento,cursive" font-size="62" fill="white"
+        text-anchor="middle" stroke="#5c1f9e" stroke-width="6" paint-order="stroke">W</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────────
+     AREA STRIP
+──────────────────────────────────────────── -->
+<div class="area-strip">
+  <span>Baltimore City & County</span>
+  <span class="dot">·</span>
+  <span>Silver Spring / Montgomery County</span>
+  <span class="dot">·</span>
+  <span>Washington DC</span>
+</div>
+
+<!-- ───────────────────────────────────────
+     STATS
+──────────────────────────────────────────── -->
+<div class="stats stagger">
+  <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Cars Detailed</div></div>
+  <div class="stat"><div class="stat-num">5★</div><div class="stat-label">Rating</div></div>
+  <div class="stat"><div class="stat-num">3</div><div class="stat-label">Areas Served</div></div>
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Mobile · We Come To You</div></div>
+</div>
+
+<!-- ───────────────────────────────────────
+     HOW IT WORKS
+──────────────────────────────────────────── -->
+<div class="gap"></div>
+<div class="divider"><div class="dl"></div><div class="dt">How It Works</div><div class="dl"></div></div>
+<section class="section">
+  <div class="section-label reveal">Simple 3-step process</div>
+  <div class="steps stagger">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Book Online</h3>
+      <p>Pick your service, choose a date and time, and fill in your location. Takes less than 2 minutes.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>We Come To You</h3>
+      <p>Won arrives with all professional gear — steam cleaners, vacuums, polish, everything. You don't lift a finger.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Enjoy Your Clean Car</h3>
+      <p>Sit back while we transform your vehicle. Pay when done. Most customers can't believe it's the same car.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────────
+     GALLERY
+──────────────────────────────────────────── -->
+<div class="divider"><div class="dl"></div><div class="dt">Our Work</div><div class="dl"></div></div>
+<section class="section" id="gallery" style="padding-bottom:0">
+  <div class="section-label reveal">Before & after gallery</div>
+</section>
+<div style="max-width:1000px;margin:0 auto;padding:0 1.25rem 3.5rem">
+  <div class="gallery-grid reveal">
+    <div class="gcard" style="background:linear-gradient(135deg,#0d0020,#1a0a2e)">
+      <div class="gcard-ph"><div class="gcard-ph-icon">✦</div><div class="gcard-ph-text">Interior · Before/After</div></div>
+      <div class="gcard-overlay"><div class="gcard-tag">Interior Detail</div></div>
+    </div>
+    <div class="gcard" style="background:linear-gradient(135deg,#0a001a,#160830)">
+      <div class="gcard-ph"><div class="gcard-ph-icon">✦</div><div class="gcard-ph-text">Exterior · Before/After</div></div>
+      <div class="gcard-overlay"><div class="gcard-tag">Exterior Detail</div></div>
+    </div>
+    <div class="gcard" style="background:linear-gradient(135deg,#110022,#0d001a)">
+      <div class="gcard-ph"><div class="gcard-ph-icon">✦</div><div class="gcard-ph-text">Full Bundle · Before/After</div></div>
+      <div class="gcard-overlay"><div class="gcard-tag">Full Detail Bundle</div></div>
+    </div>
+  </div>
+  <p style="font-size:0.66rem;color:var(--muted);margin-top:0.6rem;font-style:italic;text-align:center">
+    Real before/after photos coming soon — follow
+    <a href="https://instagram.com/WashedByWon" target="_blank" rel="noopener" style="color:var(--purple-light);text-decoration:none">@WashedByWon</a>
+    for live updates.
+  </p>
+</div>
+
+<!-- ───────────────────────────────────────
+     SERVICES & PRICING
+──────────────────────────────────────────── -->
+<div class="divider"><div class="dl"></div><div class="dt">Services & Pricing</div><div class="dl"></div></div>
+<section class="section" id="services">
+  <div class="section-label reveal">Choose your service · tap to select</div>
+  <div class="services-grid stagger">
+    <div class="scard" onclick="selectService(this,'Interior Detail')">
+      <div class="chk">✓</div>
+      <h3>Interior Detail</h3>
+      <div class="pr"><span>Small</span><span>$65</span></div>
+      <div class="pr"><span>Medium</span><span>$85</span></div>
+      <div class="pr"><span>Large / SUV / Truck</span><span>$105</span></div>
+    </div>
+    <div class="scard" onclick="selectService(this,'Exterior Detail')">
+      <div class="chk">✓</div>
+      <h3>Exterior Detail</h3>
+      <div class="pr"><span>Small</span><span>$75</span></div>
+      <div class="pr"><span>Medium</span><span>$95</span></div>
+      <div class="pr"><span>Large / SUV / Truck</span><span>$115</span></div>
+    </div>
+    <div class="scard" onclick="selectService(this,'Full Detail Bundle')">
+      <div class="chk">✓</div>
+      <div class="btag">★ Best Value — 10% Off</div>
+      <h3>Full Detail Bundle</h3>
+      <div class="pr"><span>Small</span><span>$129 <s class="orig">$143</s></span></div>
+      <div class="pr"><span>Medium</span><span>$162 <s class="orig">$180</s></span></div>
+      <div class="pr"><span>Large / SUV / Truck</span><span>$198 <s class="orig">$220</s></span></div>
+    </div>
+  </div>
+
+  <div class="gap-sm"></div>
+  <div class="section-label reveal">Add-ons</div>
+  <div class="addon-grid stagger">
+    <div class="acard" onclick="toggleAddon(this,'Deep Seat Cleaning',25)">
+      <div><div class="aname">Deep Seat Cleaning</div></div>
+      <span class="aprice">+$25</span>
+    </div>
+    <div class="acard" onclick="toggleAddon(this,'Extra Dirty Fee',50)">
+      <div>
+        <div class="aname">Extra Dirty Fee</div>
+        <div class="asub">Interior only · heavy dirt/pet hair</div>
+      </div>
+      <span class="aprice">+$50</span>
+    </div>
+    <div class="acard" onclick="toggleAddon(this,'Travel Fee (25+ mi)',15)">
+      <div>
+        <div class="aname">Travel Fee</div>
+        <div class="asub">25+ miles from service area</div>
+      </div>
+      <span class="aprice">+$15</span>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────────
+     BOOKING
+──────────────────────────────────────────── -->
+<div class="divider"><div class="dl"></div><div class="dt">Book Your Appointment</div><div class="dl"></div></div>
+<section class="section" id="book">
+  <div id="main-form">
+
+    <div id="service-hint" class="service-hint">
+      ↑ Pick a service above first — it sets your price.
+    </div>
+
+    <div class="sumbar reveal">
+      <div class="s-item"><div class="slabel">Service</div><div class="sval" id="ss">—</div></div>
+      <div class="s-item"><div class="slabel">Add-ons</div><div class="sval" id="sa">None</div></div>
+      <div class="s-item"><div class="slabel">Date & Time</div><div class="sval" id="sdt">—</div></div>
+      <div class="s-item"><div class="slabel">Est. Total</div><div class="sval price" id="sp">$—</div></div>
+    </div>
+
+    <div class="booking-layout">
+      <div class="cal-box reveal-left">
+        <div class="cal-header">
+          <button class="cal-nav" onclick="changeMonth(-1)" aria-label="Previous month">&#8592;</button>
+          <div class="cal-month" id="cml"></div>
+          <button class="cal-nav" onclick="changeMonth(1)" aria-label="Next month">&#8594;</button>
+        </div>
+        <div class="cdh">
+          <div class="cdl">Su</div><div class="cdl">Mo</div><div class="cdl">Tu</div>
+          <div class="cdl">We</div><div class="cdl">Th</div><div class="cdl">Fr</div>
+          <div class="cdl">Sa</div>
+        </div>
+        <div class="cgrid" id="cgrid" role="grid" aria-label="Select a date"></div>
+        <div class="tslots" id="tsw" style="display:none">
+          <div class="tlabel">Available times</div>
+          <div class="sgrid" id="sgrid" role="group" aria-label="Select a time"></div>
+        </div>
+      </div>
+
+      <div class="form-box reveal-right">
+        <div class="fg">
+          <div class="fgrp">
+            <label for="fn">First name</label>
+            <input type="text" id="fn" autocomplete="given-name" placeholder="Jalen" inputmode="text"/>
+          </div>
+          <div class="fgrp">
+            <label for="ln">Last name</label>
+            <input type="text" id="ln" autocomplete="family-name" placeholder="Smith" inputmode="text"/>
+          </div>
+          <div class="fgrp full">
+            <label for="ph">Phone number</label>
+            <input type="tel" id="ph" autocomplete="tel" placeholder="(240) 555-0100" inputmode="tel"/>
+          </div>
+          <div class="fgrp full">
+            <label for="em">Email address</label>
+            <input type="email" id="em" autocomplete="email" placeholder="you@email.com" inputmode="email"/>
+          </div>
+          <div class="fgrp full">
+            <label for="vs">Vehicle size</label>
+            <select id="vs" onchange="updateSummary()" autocomplete="off">
+              <option value="">Select size…</option>
+              <option value="Small">Small (sedan, coupe, compact)</option>
+              <option value="Medium">Medium (mid-size sedan, hatchback)</option>
+              <option value="Large/SUV/Truck">Large / SUV / Truck</option>
+            </select>
+          </div>
+          <div class="fgrp full">
+            <label for="addr">Your address / location</label>
+            <input type="text" id="addr" autocomplete="street-address" placeholder="123 Main St, Baltimore MD" inputmode="text"/>
+          </div>
+          <div class="fgrp full">
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" placeholder="Pet hair, stains, anything we should know…"></textarea>
+          </div>
+        </div>
+        <button id="book-submit" class="btn" onclick="submitBooking()" style="width:100%;font-size:0.8rem">
+          Request Appointment →
+        </button>
+        <div id="booking-error" class="booking-error"></div>
+      </div>
+    </div>
+
+    <div class="paystrip reveal">
+      <div class="plabel">We accept</div>
+      <div class="pbadges">
+        <div class="pbadge">Cash</div>
+        <div class="pbadge">Zelle</div>
+        <div class="pbadge">CashApp</div>
+        <div class="pbadge">Venmo</div>
+        <div class="pbadge">Card (Square)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="success" id="success">
+    <div class="sicon">✓</div>
+    <h2>Booking Requested!</h2>
+    <p>Won will reach out shortly to confirm your appointment. See you soon — follow us for before & afters.</p>
+    <br>
+    <a href="https://instagram.com/WashedByWon" class="btn" target="_blank" rel="noopener" style="margin-top:0.5rem">
+      Follow @WashedByWon
+    </a>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────────
+     TESTIMONIALS
+──────────────────────────────────────────── -->
+<div class="divider"><div class="dl"></div><div class="dt">What Clients Say</div><div class="dl"></div></div>
+<section class="section" id="reviews">
+  <div class="section-label reveal">Customer reviews</div>
+  <div class="tgrid stagger">
+    <div class="tcard">
+      <div class="stars">★★★★★</div>
+      <p>"Won came out same week and completely transformed my car. The interior looked brand new — couldn't believe it was the same seats."</p>
+      <div class="tauthor">— Marcus T. · <span>Baltimore, MD</span></div>
+    </div>
+    <div class="tcard">
+      <div class="stars">★★★★★</div>
+      <p>"Super professional, on time, and the detail was immaculate. My whole car smelled amazing after. Will definitely be booking again."</p>
+      <div class="tauthor">— Destiny R. · <span>Silver Spring, MD</span></div>
+    </div>
+    <div class="tcard">
+      <div class="stars">★★★★★</div>
+      <p>"Best mobile detailer in the DMV. Came right to my apartment parking lot. Convenient and high quality — 10/10."</p>
+      <div class="tauthor">— Kevin A. · <span>Washington, DC</span></div>
+    </div>
+  </div>
+  <p class="tplaceholder" style="font-style:italic;font-size:0.66rem;color:var(--muted);margin-top:0.6rem;text-align:center">
+    * Replace with real client testimonials once collected.
+  </p>
+</section>
+
+<!-- ───────────────────────────────────────
+     FAQ
+──────────────────────────────────────────── -->
+<div class="divider"><div class="dl"></div><div class="dt">FAQ</div><div class="dl"></div></div>
+<section class="section" id="faq">
+  <div class="section-label reveal">Frequently asked questions</div>
+  <div class="faqlist reveal">
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">Do I need to be home during the detail? <span class="faqicon">+</span></div>
+      <div class="faqa">Nope! As long as we have access to your vehicle, you don't need to be present. We'll notify you when we're on the way and when we're done.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">Do you bring your own supplies? <span class="faqicon">+</span></div>
+      <div class="faqa">Yes — we bring everything. Professional-grade cleaning products, vacuums, steam cleaners, and microfiber towels. Just provide the car and a nearby water source if possible.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">How long does a detail take? <span class="faqicon">+</span></div>
+      <div class="faqa">Interior: 2–3 hours. Exterior: 1.5–2 hours. Full bundle: 3–5 hours depending on vehicle size and condition. We never rush the job.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">What's the Extra Dirty Fee? <span class="faqicon">+</span></div>
+      <div class="faqa">If your vehicle has excessive dirt, heavy staining, or a lot of pet hair requiring extra time and product, this covers the additional labor. We'll always notify you before applying it — no surprises.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">What areas do you serve? <span class="faqicon">+</span></div>
+      <div class="faqa">Baltimore City & County, Silver Spring / Montgomery County, and Washington DC. Travel over 25 miles from the service area incurs a +$15 travel fee.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">When do I pay? <span class="faqicon">+</span></div>
+      <div class="faqa">Payment is due upon completion. We accept Cash, Zelle, CashApp, Venmo, and Card via Square — whatever works for you.</div>
+    </div>
+    <div class="faqitem">
+      <div class="faqq" onclick="toggleFaq(this)">Can I reschedule or cancel? <span class="faqicon">+</span></div>
+      <div class="faqa">Life happens — just DM us on Instagram as early as possible so we can adjust. We appreciate at least 24 hours notice when possible.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────────
+     CONTACT
+──────────────────────────────────────────── -->
+<div class="divider"><div class="dl"></div><div class="dt">Get In Touch</div><div class="dl"></div></div>
+<section class="section" id="contact">
+  <div class="section-label reveal">Contact us</div>
+  <div class="cgrid2 stagger">
+    <div class="ccard">
+      <div class="cicon">📸</div>
+      <div class="clabel">Instagram</div>
+      <a href="https://instagram.com/WashedByWon" target="_blank" rel="noopener">@WashedByWon</a>
+    </div>
+    <div class="ccard">
+      <div class="cicon">💬</div>
+      <div class="clabel">Questions? DM us</div>
+      <a href="https://instagram.com/WashedByWon" target="_blank" rel="noopener">Message on Instagram</a>
+    </div>
+    <div class="ccard">
+      <div class="cicon">📍</div>
+      <div class="clabel">Service Area</div>
+      <a>Baltimore · Silver Spring · DC</a>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────────
+     NOTIFY SIGNUP
+──────────────────────────────────────────── -->
+<div class="divider"><div class="dl"></div><div class="dt">Stay Updated</div><div class="dl"></div></div>
+<div class="notify-section" id="notify">
+  <div class="notify-inner">
+    <div class="section-label reveal" style="justify-content:center">Get notified</div>
+    <h2 class="notify-title reveal">First to Know</h2>
+    <p class="notify-sub reveal">Drop your number and we'll text you the moment new slots open — first come, first served.</p>
+    <div id="notify-form-wrap">
+      <div class="notify-form">
+        <div class="notify-row">
+          <div class="fgrp">
+            <label for="nf-name">Your name</label>
+            <input type="text" id="nf-name" placeholder="Jalen" inputmode="text" autocomplete="given-name"/>
+          </div>
+          <div class="fgrp">
+            <label for="nf-phone">Phone number</label>
+            <input type="tel" id="nf-phone" placeholder="(240) 555-0100" inputmode="tel" autocomplete="tel"/>
+          </div>
+        </div>
+        <button class="btn" onclick="submitNotify()" style="width:100%">Text Me When You Open →</button>
+        <p class="notify-consent">By submitting, you agree to receive SMS updates from Wash By Won. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out at any time.</p>
+      </div>
+    </div>
+    <div class="notify-success" id="notify-success">
+      <p>✓ You're on the list! We'll text you the moment new slots open.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ───────────────────────────────────────
+     FOOTER
+──────────────────────────────────────────── -->
+<footer>
+  <div class="footer-logo">Washed By Won</div>
+  <div style="color:var(--purple-light);font-size:0.7rem;letter-spacing:0.15em;margin-bottom:0.4rem">★ ★ ★</div>
+  <div class="footer-social">
+    <a href="https://instagram.com/WashedByWon" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/>
+        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
+  </div>
+  <div>&copy; 2025 <strong>Washed By Won</strong> &nbsp;·&nbsp; DMV Area &nbsp;·&nbsp;
+    <a href="https://instagram.com/WashedByWon" target="_blank" rel="noopener">@WashedByWon</a>
+  </div>
+  <div style="font-size:0.65rem;color:var(--border2);margin-top:0.4rem">Baltimore · Silver Spring · Washington DC</div>
+</footer>
+
+<!-- Mobile sticky CTA — visible only on phones -->
+<a href="#book" class="sticky-cta">Book a Detail →</a>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+// ── API BASE URL ──────────────────────────────────────────
+// In production, set window.WBW_API to your deployed server URL.
+const API = (typeof window.WBW_API !== 'undefined') ? window.WBW_API : 'https://washedbywon-backend.onrender.com';
+
+// ── PRICING ──────────────────────────────────────────────
+const prices = {
+  'Interior Detail':    { Small: 65,  Medium: 85,  'Large/SUV/Truck': 105 },
+  'Exterior Detail':   { Small: 75,  Medium: 95,  'Large/SUV/Truck': 115 },
+  'Full Detail Bundle':{ Small: 129, Medium: 162, 'Large/SUV/Truck': 198 }
+};
+
+// ── STATE ─────────────────────────────────────────────────
+let svc = null, addons = [], addTotal = 0, selDay = null, selTime = null;
+let availableTimesForDay = [];   // slots returned by API for the selected date
+
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+let vy = new Date().getFullYear(), vm = new Date().getMonth();
+
+// ── MOBILE NAV ────────────────────────────────────────────
+function toggleMob() {
+  const m = document.getElementById('mobMenu');
+  const h = document.getElementById('ham');
+  const open = m.classList.toggle('open');
+  h.classList.toggle('open');
+  h.setAttribute('aria-expanded', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMob() {
+  document.getElementById('mobMenu').classList.remove('open');
+  const h = document.getElementById('ham');
+  h.classList.remove('open');
+  h.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMob(); });
+
+// ── NAV SCROLL SHADOW ─────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+}, { passive: true });
+
+// ── SCROLL ANIMATIONS ─────────────────────────────────────
+document.body.classList.add('js-anim');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.stagger').forEach(el => {
+  const rect = el.getBoundingClientRect();
+  if (rect.top < window.innerHeight && rect.bottom > 0) {
+    el.classList.add('visible');
+  } else {
+    observer.observe(el);
+  }
+});
+
+// ── FETCH WITH TIMEOUT ────────────────────────────────────
+function fetchWithTimeout(url, opts, ms) {
+  const ctrl = new AbortController();
+  const id   = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, { ...opts, signal: ctrl.signal }).finally(() => clearTimeout(id));
+}
+
+// ── SERVICE SELECTION ─────────────────────────────────────
+function selectService(el, name) {
+  document.querySelectorAll('.scard').forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  svc = name;
+  updateSummary();
+  document.getElementById('service-hint').classList.add('hidden');
+  setTimeout(() => document.getElementById('book').scrollIntoView({ behavior: 'smooth' }), 300);
+}
+
+// ── ADD-ON TOGGLE ─────────────────────────────────────────
+function toggleAddon(el, name, price) {
+  el.classList.toggle('sel');
+  if (el.classList.contains('sel')) { addons.push(name); addTotal += price; }
+  else { addons = addons.filter(a => a !== name); addTotal -= price; }
+  updateSummary();
+}
+
+// ── SUMMARY BAR ───────────────────────────────────────────
+function updateSummary() {
+  const sz = document.getElementById('vs').value;
+  document.getElementById('ss').textContent  = svc || '—';
+  document.getElementById('sa').textContent  = addons.length ? addons.join(', ') : 'None';
+  document.getElementById('sdt').textContent = (selDay && selTime)
+    ? `${fmtDateDisplay(selDay)} · ${selTime}` : (selDay ? fmtDateDisplay(selDay) : '—');
+  if (svc && sz && prices[svc] && prices[svc][sz]) {
+    document.getElementById('sp').textContent = '$' + (prices[svc][sz] + addTotal);
+  } else {
+    document.getElementById('sp').textContent = (svc && !sz) ? 'Select size' : '$—';
+  }
+}
+
+// ── DATE HELPERS ──────────────────────────────────────────
+function toISODate(y, m, d) {
+  return `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+}
+function fmtDateDisplay(isoStr) {
+  // "2025-04-12" → "Apr 12"
+  const [y, m, d] = isoStr.split('-').map(Number);
+  return `${months[m - 1].slice(0, 3)} ${d}`;
+}
+
+// ── CALENDAR ─────────────────────────────────────────────
+function changeMonth(dir) {
+  vm += dir;
+  if (vm > 11) { vm = 0; vy++; }
+  if (vm < 0)  { vm = 11; vy--; }
+  renderCal();
+}
+
+async function renderCal() {
+  document.getElementById('cml').textContent = months[vm] + ' ' + vy;
+  const grid = document.getElementById('cgrid');
+
+  // Show loading state
+  grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:1.2rem 0;' +
+    'font-size:0.7rem;color:var(--muted);letter-spacing:0.1em">Loading…</div>';
+
+  const monthStr = `${vy}-${String(vm + 1).padStart(2, '0')}`;
+  let availSet   = new Set();
+
+  try {
+    const res  = await fetchWithTimeout(`${API}/api/availability?month=${monthStr}`, {}, 10000);
+    const data = await res.json();
+    availSet = new Set(data.availableDates || []);
+  } catch (_) {
+    // Graceful fallback: show Mon/Wed/Fri/Sat as available when backend is unreachable
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const daysInMonth = new Date(vy, vm + 1, 0).getDate();
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dt = new Date(vy, vm, d);
+      if (dt >= today && [1, 3, 5, 6].includes(dt.getDay()))
+        availSet.add(toISODate(vy, vm, d));
+    }
+  }
+
+  grid.innerHTML = '';
+  const first = new Date(vy, vm, 1).getDay();
+  const days  = new Date(vy, vm + 1, 0).getDate();
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+
+  for (let i = 0; i < first; i++) {
+    const e = document.createElement('div'); e.className = 'cday'; grid.appendChild(e);
+  }
+
+  for (let d = 1; d <= days; d++) {
+    const el      = document.createElement('div');
+    const dt      = new Date(vy, vm, d);
+    const dateStr = toISODate(vy, vm, d);
+    el.textContent = d;
+
+    if (dt < today) {
+      el.className = 'cday past';
+    } else if (availSet.has(dateStr)) {
+      el.className = 'cday avail';
+      el.setAttribute('role', 'gridcell');
+      el.setAttribute('tabindex', '0');
+      const handler = () => selectDay(el, dateStr);
+      el.addEventListener('click', handler);
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); }
+      });
+    } else {
+      el.className = 'cday unavail';
+    }
+
+    grid.appendChild(el);
+  }
+}
+
+async function selectDay(el, dateStr) {
+  document.querySelectorAll('.cday').forEach(d => d.classList.remove('selday'));
+  el.classList.add('selday');
+  selDay = dateStr; selTime = null;
+  updateSummary();
+
+  // Show loading in slots area
+  const w = document.getElementById('tsw');
+  const g = document.getElementById('sgrid');
+  w.style.display = 'block';
+  g.innerHTML = '<div style="grid-column:1/-1;font-size:0.68rem;color:var(--muted);' +
+    'padding:0.5rem 0;letter-spacing:0.1em">Loading times…</div>';
+
+  try {
+    const res  = await fetchWithTimeout(`${API}/api/availability/slots?date=${dateStr}`, {}, 10000);
+    const data = await res.json();
+    availableTimesForDay = data.slots || [];
+  } catch (_) {
+    // Fallback times if API is down
+    availableTimesForDay = [
+      '9:00 AM','10:00 AM','11:00 AM','12:00 PM',
+      '1:00 PM','2:00 PM','3:00 PM','4:00 PM'
+    ];
+  }
+
+  renderSlots();
+}
+
+function renderSlots() {
+  const w = document.getElementById('tsw');
+  const g = document.getElementById('sgrid');
+  w.style.display = 'block';
+  g.innerHTML = '';
+
+  if (availableTimesForDay.length === 0) {
+    g.innerHTML = '<div style="grid-column:1/-1;font-size:0.72rem;color:var(--muted);' +
+      'padding:0.5rem 0">No times available — try another date.</div>';
+    return;
+  }
+
+  availableTimesForDay.forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'slot open';
+    el.textContent = t;
+    el.setAttribute('role', 'button');
+    el.setAttribute('tabindex', '0');
+    const handler = () => selectSlot(el, t);
+    el.addEventListener('click', handler);
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); }
+    });
+    g.appendChild(el);
+  });
+}
+
+function selectSlot(el, t) {
+  document.querySelectorAll('.slot').forEach(s => s.classList.remove('selslot'));
+  el.classList.add('selslot');
+  selTime = t;
+  updateSummary();
+}
+
+// ── FORM SUBMIT ───────────────────────────────────────────
+async function submitBooking() {
+  const fn    = document.getElementById('fn').value.trim();
+  const ln    = document.getElementById('ln').value.trim();
+  const ph    = document.getElementById('ph').value.trim();
+  const em    = document.getElementById('em').value.trim();
+  const vs    = document.getElementById('vs').value;
+  const addr  = document.getElementById('addr').value.trim();
+  const notes = document.getElementById('notes').value.trim();
+  const errEl = document.getElementById('booking-error');
+
+  errEl.classList.remove('show');
+
+  const required = [
+    { id: 'fn', val: fn }, { id: 'ln', val: ln },
+    { id: 'ph', val: ph }, { id: 'vs', val: vs },
+    { id: 'addr', val: addr }
+  ];
+  let valid = true;
+  required.forEach(({ id, val }) => {
+    const el = document.getElementById(id);
+    const ok = !!val;
+    el.style.borderColor = ok ? '' : '#ef4444';
+    if (!ok) valid = false;
+  });
+
+  if (!svc) {
+    errEl.innerHTML = '↑ Scroll up and select a service — it sets your price.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (!selDay || !selTime) {
+    errEl.innerHTML = 'Pick a date and a time slot from the calendar on the left.';
+    errEl.classList.add('show');
+    return;
+  }
+  if (!valid) {
+    errEl.innerHTML = 'Fill in all highlighted fields above.';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const btn = document.getElementById('book-submit');
+  btn.textContent = 'Sending…';
+  btn.disabled    = true;
+
+  const basePrice = (svc && vs && prices[svc]?.[vs]) ? prices[svc][vs] : 0;
+  const total     = basePrice + addTotal;
+
+  try {
+    const res = await fetchWithTimeout(`${API}/api/bookings`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        firstName: fn, lastName: ln, phone: ph, email: em || null,
+        address: addr, service: svc,
+        addons:  addons.length ? addons : null,
+        vehicleSize: vs, date: selDay, time: selTime,
+        notes: notes || null, total
+      })
+    }, 25000);
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Booking failed.');
+
+    document.getElementById('main-form').style.display = 'none';
+    document.getElementById('success').style.display   = 'block';
+    window.scrollTo({ top: document.getElementById('book').offsetTop - 70, behavior: 'smooth' });
+  } catch (err) {
+    const isTimeout = err.name === 'AbortError';
+    errEl.innerHTML = isTimeout
+      ? `The server took too long to respond — try again in a moment, or <a href="https://instagram.com/WashedByWon" target="_blank" rel="noopener">DM @WashedByWon on Instagram</a> to book directly.`
+      : `${err.message || 'Something went wrong.'} <a href="https://instagram.com/WashedByWon" target="_blank" rel="noopener">DM us on Instagram</a> to book directly.`;
+    errEl.classList.add('show');
+    btn.textContent = 'Request Appointment →';
+    btn.disabled    = false;
+  }
+}
+
+// Clear field error highlight + inline error on any input
+['fn','ln','ph','em','vs','addr'].forEach(id => {
+  document.getElementById(id).addEventListener('input', function() {
+    this.style.borderColor = '';
+    document.getElementById('booking-error').classList.remove('show');
+  });
+});
+
+// ── FAQ ───────────────────────────────────────────────────
+function toggleFaq(el) { el.parentElement.classList.toggle('open'); }
+
+// ── NOTIFY SIGNUP ─────────────────────────────────────────
+async function submitNotify() {
+  const nameEl  = document.getElementById('nf-name');
+  const phoneEl = document.getElementById('nf-phone');
+  const name    = nameEl.value.trim();
+  const phone   = phoneEl.value.trim();
+  nameEl.style.borderColor  = name  ? '' : '#ef4444';
+  phoneEl.style.borderColor = phone ? '' : '#ef4444';
+  if (!name || !phone) return;
+
+  const btn = document.querySelector('#notify-form-wrap .btn');
+  if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
+
+  try {
+    await fetch(`${API}/api/notify/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone })
+    });
+    document.getElementById('notify-form-wrap').style.display = 'none';
+    document.getElementById('notify-success').style.display   = 'block';
+  } catch {
+    if (btn) { btn.textContent = 'Text Me When You Open →'; btn.disabled = false; }
+    alert('Something went wrong. Try again in a moment.');
+  }
+}
+['nf-name','nf-phone'].forEach(id => {
+  document.getElementById(id).addEventListener('input', function(){ this.style.borderColor = ''; });
+});
+
+// ── INIT ──────────────────────────────────────────────────
+renderCal();
+</script>
+
+<!-- ── CHAT WIDGET ──────────────────────────────────────────────────────── -->
+<style>
+#chat-bubble{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:500;
+  width:52px;height:52px;border-radius:50%;
+  background:var(--purple);border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(92,31,158,0.5);
+  transition:background 0.2s,transform 0.2s;
+}
+#chat-bubble:hover{background:var(--purple-bright);transform:scale(1.05)}
+#chat-bubble svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#chat-bubble .chat-badge{
+  position:absolute;top:-3px;right:-3px;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--purple-light);border:2px solid var(--black);
+  font-size:9px;font-weight:700;color:#fff;
+  display:none;align-items:center;justify-content:center;
+}
+
+#chat-window{
+  position:fixed;bottom:5rem;right:1.5rem;z-index:500;
+  width:340px;max-height:520px;
+  background:#0f0f0f;border:1px solid var(--border2);
+  border-radius:12px;display:none;flex-direction:column;
+  box-shadow:0 8px 40px rgba(0,0,0,0.6);overflow:hidden;
+}
+#chat-window.open{display:flex}
+
+.chat-head{
+  display:flex;align-items:center;gap:0.75rem;
+  padding:0.9rem 1rem;background:var(--purple-faint);
+  border-bottom:1px solid var(--border);
+}
+.chat-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--purple);display:flex;align-items:center;justify-content:center;
+  font-family:'Sacramento',cursive;font-size:1.1rem;color:#fff;flex-shrink:0;
+}
+.chat-head-info{flex:1}
+.chat-head-name{font-size:0.85rem;font-weight:600}
+.chat-head-status{font-size:0.68rem;color:var(--green-light);display:flex;align-items:center;gap:0.3rem}
+.chat-head-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green-light);display:inline-block}
+.chat-close{
+  background:transparent;border:none;color:var(--muted2);
+  cursor:pointer;font-size:1.1rem;padding:0.25rem;line-height:1;
+  transition:color 0.2s;
+}
+.chat-close:hover{color:var(--white)}
+
+.chat-messages{
+  flex:1;overflow-y:auto;padding:1rem;
+  display:flex;flex-direction:column;gap:0.75rem;
+  scrollbar-width:thin;scrollbar-color:var(--border2) transparent;
+}
+.chat-msg{display:flex;flex-direction:column;gap:0.2rem;max-width:85%}
+.chat-msg.user{align-self:flex-end;align-items:flex-end}
+.chat-msg.bot{align-self:flex-start}
+.chat-bubble-msg{
+  padding:0.6rem 0.85rem;border-radius:10px;
+  font-size:0.8rem;line-height:1.5;
+}
+.chat-msg.bot .chat-bubble-msg{background:var(--mid);border:1px solid var(--border2);color:var(--white)}
+.chat-msg.user .chat-bubble-msg{background:var(--purple);color:#fff}
+.chat-typing{display:flex;gap:4px;align-items:center;padding:0.6rem 0.85rem;background:var(--mid);border:1px solid var(--border2);border-radius:10px;width:fit-content}
+.chat-typing span{width:6px;height:6px;border-radius:50%;background:var(--muted2);animation:typing 1.2s infinite}
+.chat-typing span:nth-child(2){animation-delay:0.2s}
+.chat-typing span:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,60%,100%{opacity:0.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+
+.chat-input-row{
+  display:flex;gap:0.5rem;padding:0.75rem;
+  border-top:1px solid var(--border);background:#0f0f0f;
+}
+#chat-input{
+  flex:1;background:var(--mid);border:1px solid var(--border2);
+  color:var(--white);padding:0.6rem 0.85rem;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:0.8rem;outline:none;
+  resize:none;transition:border-color 0.2s;
+}
+#chat-input:focus{border-color:var(--purple)}
+#chat-input::placeholder{color:var(--muted)}
+#chat-send{
+  background:var(--purple);border:none;color:#fff;
+  width:36px;height:36px;border-radius:8px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s;flex-shrink:0;align-self:flex-end;
+}
+#chat-send:hover{background:var(--purple-bright)}
+#chat-send svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+@media(max-width:400px){
+  #chat-window{width:calc(100vw - 2rem);right:1rem;bottom:5rem}
+}
+</style>
+
+<!-- Bubble -->
+<button id="chat-bubble" onclick="toggleChat()" aria-label="Chat with us">
+  <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <div class="chat-badge" id="chat-badge">1</div>
+</button>
+
+<!-- Window -->
+<div id="chat-window">
+  <div class="chat-head">
+    <div class="chat-avatar">W</div>
+    <div class="chat-head-info">
+      <div class="chat-head-name">Won — WashedByWon</div>
+      <div class="chat-head-status">Online now</div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-input-row">
+    <textarea id="chat-input" rows="1" placeholder="Ask about pricing, services..."></textarea>
+    <button id="chat-send" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+(function(){
+  const CHAT_API = 'https://washedbywon-backend.onrender.com/api/chat';
+  let chatHistory = [];
+  let chatOpened  = false;
+
+  function toggleChat() {
+    const win = document.getElementById('chat-window');
+    const badge = document.getElementById('chat-badge');
+    const isOpen = win.classList.toggle('open');
+    if (isOpen) {
+      badge.style.display = 'none';
+      if (!chatOpened) {
+        chatOpened = true;
+        addBotMessage("Hey! I'm Won, your WashedByWon assistant. Ask me anything about pricing, services, or availability — or I can point you to the booking form. How can I help?");
+      }
+      setTimeout(() => document.getElementById('chat-input').focus(), 100);
+    }
+  }
+
+  // Show badge after 4s to draw attention
+  setTimeout(() => {
+    const badge = document.getElementById('chat-badge');
+    const win   = document.getElementById('chat-window');
+    if (!win.classList.contains('open')) badge.style.display = 'flex';
+  }, 4000);
+
+  function addBotMessage(text) {
+    const msgs = document.getElementById('chat-messages');
+    const el = document.createElement('div');
+    el.className = 'chat-msg bot';
+    el.innerHTML = `<div class="chat-bubble-msg">${text}</div>`;
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function addUserMessage(text) {
+    const msgs = document.getElementById('chat-messages');
+    const el = document.createElement('div');
+    el.className = 'chat-msg user';
+    el.innerHTML = `<div class="chat-bubble-msg">${escHtml(text)}</div>`;
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function showTyping() {
+    const msgs = document.getElementById('chat-messages');
+    const el = document.createElement('div');
+    el.className = 'chat-msg bot';
+    el.id = 'chat-typing';
+    el.innerHTML = '<div class="chat-typing"><span></span><span></span><span></span></div>';
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('chat-typing');
+    if (t) t.remove();
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const text  = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    input.style.height = 'auto';
+    addUserMessage(text);
+    chatHistory.push({ role: 'user', content: text });
+
+    showTyping();
+    try {
+      const res = await fetch(CHAT_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: chatHistory })
+      });
+      const data = await res.json();
+      removeTyping();
+      const reply = data.reply || "Sorry, I'm having trouble right now. Try again in a moment.";
+      addBotMessage(escHtml(reply));
+      chatHistory.push({ role: 'assistant', content: reply });
+    } catch {
+      removeTyping();
+      addBotMessage("Sorry, I'm having trouble connecting. Try again in a moment.");
+    }
+  }
+
+  // Send on Enter (Shift+Enter for newline)
+  document.getElementById('chat-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+
+  window.toggleChat = toggleChat;
+})();
+</script>
+
+</body>
 </html>
