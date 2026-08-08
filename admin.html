@@ -184,7 +184,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white)
 }
 .cal-cell{
   background:var(--mid);border:1px solid var(--border);border-radius:6px;
-  min-height:80px;padding:0.5rem;cursor:pointer;transition:border-color 0.2s;
+  min-height:100px;padding:0.5rem;cursor:pointer;transition:border-color 0.2s;
   position:relative;
 }
 .cal-cell:hover{border-color:var(--purple)}
@@ -194,9 +194,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white)
 .cal-date{font-size:0.75rem;font-weight:600;color:var(--muted2);margin-bottom:0.35rem}
 .cal-cell.today .cal-date{color:var(--purple-light)}
 .cal-dot{
-  font-size:0.65rem;padding:0.15rem 0.35rem;border-radius:3px;
-  margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-size:0.62rem;padding:0.3rem 0.4rem;border-radius:3px;
+  margin-bottom:3px;overflow:hidden;line-height:1.4;
 }
+.cal-dot-time{display:block;font-weight:700;font-size:0.68rem;letter-spacing:0.01em}
+.cal-dot-info{display:block;opacity:0.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cal-dot.pending{background:rgba(250,204,21,0.15);color:var(--yellow-light)}
 .cal-dot.confirmed{background:rgba(34,197,94,0.15);color:var(--green-light)}
 .cal-dot.completed{background:rgba(96,165,250,0.15);color:var(--blue-light)}
@@ -759,7 +761,12 @@ function renderCalendar() {
 
     const dots = dayBookings.slice(0,3).map(b => {
       const first = (b.name || b.firstName || 'Guest').split(' ')[0];
-      return `<div class="cal-dot ${b.status}">${first}</div>`;
+      const time  = b.time || b.slot || '—';
+      const svc   = (b.service || '').replace('Interior + Exterior', 'Int+Ext').replace('Interior', 'Interior').replace('Exterior', 'Exterior');
+      return `<div class="cal-dot ${b.status}">
+        <span class="cal-dot-time">${time}</span>
+        <span class="cal-dot-info">${first} · ${svc}</span>
+      </div>`;
     }).join('');
 
     html += `
