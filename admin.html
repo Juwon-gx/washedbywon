@@ -543,19 +543,35 @@ let allBookings = [];
 let currentFilter = 'all';
 let calDate = new Date();
 
+async function fetchWithTimeout(url, opts = {}, ms = 35000) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const res = await fetch(url, { ...opts, signal: ctrl.signal });
+    return res;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // ── Auth ──
 document.getElementById('login-form').addEventListener('submit', async e => {
   e.preventDefault();
   const pw = document.getElementById('password-input').value.trim();
   // Verify by hitting the API
-  const res = await fetch(`${API}/api/admin/bookings`, {
-    headers: { 'x-admin-key': pw }
-  });
-  if (res.ok) {
-    adminKey = pw;
-    sessionStorage.setItem('wbw_key', pw);
-    showDashboard();
-  } else {
+  try {
+    const res = await fetchWithTimeout(`${API}/api/admin/bookings`, {
+      headers: { 'x-admin-key': pw }
+    });
+    if (res.ok) {
+      adminKey = pw;
+      sessionStorage.setItem('wbw_key', pw);
+      showDashboard();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  } catch (err) {
+    document.getElementById('login-error').textContent = 'Server is waking up — wait 30 seconds and try again.';
     document.getElementById('login-error').style.display = 'block';
   }
 });
@@ -583,7 +599,7 @@ async function showDashboard() {
 // ── Data ──
 async function loadBookings() {
   try {
-    const res = await fetch(`${API}/api/admin/bookings`, {
+    const res = await fetchWithTimeout(`${API}/api/admin/bookings`, {
       headers: { 'x-admin-key': adminKey }
     });
     allBookings = await res.json();
@@ -591,7 +607,11 @@ async function loadBookings() {
     renderList();
     renderCalendar();
   } catch (err) {
-    showToast('Failed to load bookings', 'error');
+    if (err.name === 'AbortError') {
+      showToast('Server is waking up — wait 30 seconds and refresh', 'error');
+    } else {
+      showToast('Failed to load bookings', 'error');
+    }
   }
 }
 
