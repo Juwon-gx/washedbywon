@@ -602,17 +602,24 @@ async function loadBookings() {
     const res = await fetchWithTimeout(`${API}/api/admin/bookings`, {
       headers: { 'x-admin-key': adminKey }
     });
-    allBookings = await res.json();
-    renderStats();
-    renderList();
-    renderCalendar();
+    const data = await res.json();
+    allBookings = Array.isArray(data) ? data : [];
+    // Reset to All filter on fresh load so bookings are always visible
+    currentFilter = 'all';
+    document.querySelectorAll('.filter-btn').forEach((b,i) => {
+      b.classList.toggle('active', i === 0);
+    });
   } catch (err) {
     if (err.name === 'AbortError') {
       showToast('Server is waking up — wait 30 seconds and refresh', 'error');
     } else {
       showToast('Failed to load bookings', 'error');
     }
+    return;
   }
+  renderStats();
+  try { renderList(); } catch(e) { console.error('renderList error:', e); }
+  try { renderCalendar(); } catch(e) { console.error('renderCalendar error:', e); }
 }
 
 // ── Stats ──
@@ -640,7 +647,11 @@ function setFilter(f, btn) {
 
 function renderList() {
   const list = document.getElementById('bookings-list');
-  let bookings = [...allBookings].sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+  const getName = b => b.name || [b.firstName, b.lastName].filter(Boolean).join(' ') || 'Unknown';
+  const getTime = b => b.time || b.slot || '';
+  const getSize = b => b.vehicle_size || b.vehicleSize || b.size || '';
+  let bookings = [...allBookings].sort((a,b) =>
+    ((a.date||'')+(getTime(a))).localeCompare((b.date||'')+(getTime(b))));
   if (currentFilter !== 'all') bookings = bookings.filter(b => b.status === currentFilter);
 
   if (!bookings.length) {
@@ -649,22 +660,22 @@ function renderList() {
   }
 
   list.innerHTML = bookings.map(b => {
-    const dateStr = formatDate(b.date);
-    const addons  = b.addons ? b.addons.join(', ') : null;
+    const dateStr = b.date ? formatDate(b.date) : '—';
+    const addons  = Array.isArray(b.addons) ? b.addons.join(', ') : (b.addons || null);
     const actions = actionsFor(b);
     return `
       <div class="booking-card ${b.status}" id="card-${b.id}">
         <div class="booking-main">
           <div class="booking-top">
-            <span class="booking-name">${b.name}</span>
+            <span class="booking-name">${getName(b)}</span>
             <span class="booking-id">#${b.id}</span>
             <span class="badge ${b.status}">${b.status}</span>
           </div>
           <div class="booking-details">
-            <span>📅 <strong>${dateStr} at ${b.time}</strong></span>
-            <span>🚗 ${b.vehicle_size} — ${b.service}</span>
-            <span>📍 ${b.address}</span>
-            <span>📞 ${b.phone}</span>
+            <span>📅 <strong>${dateStr} at ${getTime(b)||'—'}</strong></span>
+            <span>🚗 ${getSize(b)||'—'} — ${b.service||'—'}</span>
+            <span>📍 ${b.address||'—'}</span>
+            <span>📞 ${b.phone||'—'}</span>
             ${b.total ? `<span>💵 <strong>$${b.total}</strong></span>` : ''}
             ${addons ? `<span>➕ ${addons}</span>` : ''}
             ${b.notes ? `<span>📝 ${b.notes}</span>` : ''}
@@ -746,9 +757,10 @@ function renderCalendar() {
     const dayBookings = allBookings.filter(b => b.date === dateStr && b.status !== 'cancelled');
     const hasBookings = dayBookings.length > 0;
 
-    const dots = dayBookings.slice(0,3).map(b =>
-      `<div class="cal-dot ${b.status}">${b.name.split(' ')[0]}</div>`
-    ).join('');
+    const dots = dayBookings.slice(0,3).map(b => {
+      const first = (b.name || b.firstName || 'Guest').split(' ')[0];
+      return `<div class="cal-dot ${b.status}">${first}</div>`;
+    }).join('');
 
     html += `
       <div class="cal-cell${isToday?' today':''}${hasBookings?' has-bookings':''}">
