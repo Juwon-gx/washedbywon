@@ -722,10 +722,10 @@ async function updateStatus(id, status) {
 function switchTab(tab, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('list-view').style.display      = tab === 'list'     ? '' : 'none';
-  document.getElementById('calendar-view').style.display  = tab === 'calendar' ? '' : 'none';
-  document.getElementById('schedule-view').style.display  = tab === 'schedule' ? '' : 'none';
-  document.getElementById('messages-view').style.display  = tab === 'messages' ? '' : 'none';
+  document.getElementById('list-view').style.display      = tab === 'list'     ? 'block' : 'none';
+  document.getElementById('calendar-view').style.display  = tab === 'calendar' ? 'block' : 'none';
+  document.getElementById('schedule-view').style.display  = tab === 'schedule' ? 'block' : 'none';
+  document.getElementById('messages-view').style.display  = tab === 'messages' ? 'block' : 'none';
   if (tab === 'calendar') renderCalendar();
   if (tab === 'schedule') loadScheduleConfig();
   if (tab === 'messages') loadMessages();
