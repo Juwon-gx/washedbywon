@@ -615,6 +615,12 @@ async function loadBookings() {
     const res = await fetchWithTimeout(`${API}/api/admin/bookings`, {
       headers: { 'x-admin-key': adminKey }
     });
+    if (res.status === 401 || res.status === 403) {
+      showToast('Session expired — please sign in again', 'error');
+      logout();
+      return;
+    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     allBookings = Array.isArray(data) ? data : [];
     // Reset to All filter on fresh load so bookings are always visible
@@ -722,7 +728,7 @@ function actionsFor(b) {
 
 async function updateStatus(id, status) {
   try {
-    const res = await fetch(`${API}/api/admin/bookings/${id}`, {
+    const res = await fetchWithTimeout(`${API}/api/admin/bookings/${id}`, {
       method: 'PATCH',
       headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
@@ -825,7 +831,7 @@ let siteOpen        = true;
 
 async function loadScheduleConfig() {
   try {
-    const res  = await fetch(`${API}/api/admin/availability`, { headers: { 'x-admin-key': adminKey } });
+    const res  = await fetchWithTimeout(`${API}/api/admin/availability`, { headers: { 'x-admin-key': adminKey } });
     const data = await res.json();
     siteOpen = data.siteOpen !== false;
     (data.availability || []).forEach(d => {
@@ -851,7 +857,7 @@ function renderSiteStatus() {
 async function toggleSiteStatus() {
   const next = !siteOpen;
   try {
-    const res = await fetch(`${API}/api/admin/availability/toggle`, {
+    const res = await fetchWithTimeout(`${API}/api/admin/availability/toggle`, {
       method: 'POST',
       headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({ open: next })
@@ -953,11 +959,11 @@ async function saveSchedule(notify) {
   if (activeBtn) { activeBtn.textContent = 'Saving…'; activeBtn.disabled = true; }
 
   try {
-    const res = await fetch(`${API}/api/admin/availability`, {
+    const res = await fetchWithTimeout(`${API}/api/admin/availability`, {
       method: 'POST',
       headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({ availability, notify })
-    });
+    }, 90000);
     if (!res.ok) throw new Error();
     const data = await res.json();
     showToast(
@@ -984,8 +990,8 @@ let subCount = 0;
 async function loadMessages() {
   try {
     const [subRes, logRes] = await Promise.all([
-      fetch(`${API}/api/admin/subscribers`,    { headers: { 'x-admin-key': adminKey } }),
-      fetch(`${API}/api/admin/messages/log`,   { headers: { 'x-admin-key': adminKey } })
+      fetchWithTimeout(`${API}/api/admin/subscribers`,    { headers: { 'x-admin-key': adminKey } }),
+      fetchWithTimeout(`${API}/api/admin/messages/log`,   { headers: { 'x-admin-key': adminKey } })
     ]);
     const subData = await subRes.json();
     subCount = subData.count || 0;
@@ -1045,11 +1051,11 @@ async function executeBroadcast() {
   if (sendBtn) { sendBtn.textContent = 'Sending…'; sendBtn.disabled = true; }
 
   try {
-    const res = await fetch(`${API}/api/admin/messages/broadcast`, {
+    const res = await fetchWithTimeout(`${API}/api/admin/messages/broadcast`, {
       method: 'POST',
       headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: body })
-    });
+    }, 90000);
     if (!res.ok) throw new Error();
     const data = await res.json();
     document.getElementById('msg-body').value = '';
