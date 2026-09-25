@@ -822,12 +822,19 @@ const TIME_SLOTS = ['9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 P
 let schedWeekOffset = 0;
 let schedData       = {};
 let siteOpen        = true;
+let defaultSlots    = TIME_SLOTS.slice(0, 8);
+
+// Every day is open by default; closed dates come from the server.
+function dayCfg(dateStr) {
+  return schedData[dateStr] || { open: true, slots: [...defaultSlots] };
+}
 
 async function loadScheduleConfig() {
   try {
     const res  = await fetch(`${API}/api/admin/availability`, { headers: { 'x-admin-key': adminKey } });
     const data = await res.json();
     siteOpen = data.siteOpen !== false;
+    if (Array.isArray(data.availableTimes) && data.availableTimes.length) defaultSlots = data.availableTimes;
     (data.availability || []).forEach(d => {
       schedData[d.date] = { open: d.open, slots: d.slots || [] };
     });
@@ -898,7 +905,7 @@ function renderScheduleBuilder() {
 
   document.getElementById('sched-days').innerHTML = dates.map((date, i) => {
     const iso    = isoDate(date);
-    const cfg    = schedData[iso] || { open: false, slots: [] };
+    const cfg    = dayCfg(iso);
     const isPast = date < today;
 
     const slotBtns = TIME_SLOTS.map(t => {
@@ -925,14 +932,14 @@ function renderScheduleBuilder() {
 }
 
 function toggleDayOpen(dateStr) {
-  if (!schedData[dateStr]) schedData[dateStr] = { open: false, slots: [] };
-  schedData[dateStr].open = !schedData[dateStr].open;
+  const cfg = schedData[dateStr] = dayCfg(dateStr);
+  cfg.open = !cfg.open;
+  if (cfg.open && !cfg.slots.length) cfg.slots = [...defaultSlots];
   renderScheduleBuilder();
 }
 
 function toggleSlot(dateStr, slot) {
-  if (!schedData[dateStr]) schedData[dateStr] = { open: true, slots: [] };
-  const slots = schedData[dateStr].slots;
+  const slots = (schedData[dateStr] = dayCfg(dateStr)).slots;
   const idx   = slots.indexOf(slot);
   if (idx >= 0) slots.splice(idx, 1);
   else slots.push(slot);
@@ -943,7 +950,7 @@ async function saveSchedule(notify) {
   const dates        = getWeekDates(schedWeekOffset);
   const availability = dates.map(d => {
     const iso = isoDate(d);
-    const cfg = schedData[iso] || { open: false, slots: [] };
+    const cfg = dayCfg(iso);
     return { date: iso, open: cfg.open, slots: cfg.slots };
   });
 
