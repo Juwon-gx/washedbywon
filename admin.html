@@ -289,7 +289,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white)
   padding:0 0.75rem;height:32px;border-radius:4px;cursor:pointer;
   transition:all 0.15s;white-space:nowrap;flex-shrink:0;
 }
-.day-toggle.on{background:var(--purple);border-color:var(--purple);color:#fff}
+.day-toggle.close:hover{border-color:var(--red-light);color:var(--red-light)}
+.day-toggle.reopen{background:var(--purple);border-color:var(--purple);color:#fff}
+.day-status{font-size:0.65rem;font-weight:600;letter-spacing:0.04em;margin-top:4px}
+.day-status.open{color:var(--green-light)}
+.day-status.closed{color:var(--red-light)}
 .day-toggle:disabled{opacity:0.4;cursor:default}
 .day-slots{display:flex;flex-wrap:wrap;gap:0.35rem;flex:1;align-content:flex-start}
 .day-slots.hidden{display:none}
@@ -920,11 +924,12 @@ function renderScheduleBuilder() {
         <div class="day-info">
           <div class="day-name">${dayNames[i]}</div>
           <div class="day-date">${date.toLocaleDateString('en-US', fmt)}</div>
+          <div class="day-status ${cfg.open?'open':'closed'}">${cfg.open ? '● Open' : '○ Closed'}</div>
         </div>
-        <button class="day-toggle${cfg.open?' on':''}"
+        <button class="day-toggle ${cfg.open?'close':'reopen'}"
           onclick="toggleDayOpen('${iso}')"
           ${isPast ? 'disabled' : ''}>
-          ${cfg.open ? '● Open' : '○ Closed'}
+          ${cfg.open ? 'Close' : 'Reopen'}
         </button>
         <div class="day-slots${cfg.open?'':' hidden'}">${slotBtns}</div>
       </div>`;
