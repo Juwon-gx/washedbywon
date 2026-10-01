@@ -23,9 +23,7 @@
   };
   const TEASER = {
     text: "Hey, welcome to WashedByWon! I can help you book or answer any questions.\n\n" +
-      "Car size: a compact sedan is Small, a full or mid-size car is Medium, and SUVs are Large. " +
-      "You could also go by tank size and add another 0. Like my tank size is 13.0 gallons ('22 Corolla SE).\n\n" +
-      'Ask any questions!',
+      "You can even ask me the price for your type of car. Just tell me what you drive!",
     options: [
       { label: 'Book a detail', send: "I'd like to book a detail." },
       { label: 'Ask a question', send: 'I have a question.' },
