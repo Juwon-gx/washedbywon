@@ -157,8 +157,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white)
 .booking-amount{color:var(--purple-light);font-weight:600;font-size:0.82rem}
 .booking-note{font-size:0.72rem;color:var(--muted);font-style:italic}
 
-.booking-footer{display:flex;justify-content:space-between;align-items:center;padding-top:0.6rem;border-top:1px solid var(--border);margin-top:0.2rem}
-.booking-actions{display:flex;gap:0.5rem}
+.booking-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.6rem;padding-top:0.6rem;border-top:1px solid var(--border);margin-top:0.2rem}
+.booking-actions{display:flex;gap:0.5rem;flex-wrap:wrap}
 .action-btn{
   background:transparent;border:1px solid var(--border2);color:var(--muted2);
   padding:0.35rem 1rem;border-radius:3px;
@@ -170,6 +170,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white)
 .action-btn.cancel:hover{border-color:var(--red-light);color:var(--red-light)}
 .action-btn.complete{border-color:rgba(96,165,250,0.35);color:var(--blue-light)}
 .action-btn.complete:hover{background:var(--blue-light);color:#000;border-color:var(--blue-light)}
+
+a.action-btn{text-decoration:none;display:inline-block}
+.action-btn.cal{border-color:rgba(201,165,76,0.4);color:var(--gold,#c9a54c)}
+.action-btn.cal:hover{background:var(--gold,#c9a54c);color:#000}
+
+/* Calendar sync + new-booking alert */
+.cal-sync{
+  background:var(--mid);border:1px solid var(--border2);border-radius:8px;
+  padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;
+  gap:0.75rem 1rem;margin-bottom:1.25rem;flex-wrap:wrap;
+}
+.cal-sync-links{display:flex;gap:0.5rem;flex-wrap:wrap}
+.new-alert{
+  display:none;align-items:center;justify-content:space-between;gap:1rem;
+  background:rgba(201,165,76,0.1);border:1px solid var(--gold,#c9a54c);border-radius:8px;
+  padding:0.85rem 1.1rem;margin-bottom:1.25rem;font-size:0.85rem;
+}
+.new-alert.show{display:flex}
+.new-alert button{background:none;border:none;color:var(--muted2);font-size:1.2rem;cursor:pointer;line-height:1}
 
 /* Calendar view */
 #calendar-view{display:none}
@@ -434,6 +453,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white)
 
     <!-- List View -->
     <div id="list-view">
+      <div class="new-alert" id="new-alert" role="status">
+        <span id="new-alert-text"></span>
+        <button onclick="dismissNewAlert()" aria-label="Dismiss">×</button>
+      </div>
+      <div class="cal-sync">
+        <div>
+          <div class="section-heading">Sync to your calendar</div>
+          <div class="status-hint">One-time setup: confirmed bookings then show up in your calendar on their own.</div>
+        </div>
+        <div class="cal-sync-links">
+          <a class="action-btn cal" id="cal-apple" href="#">Apple Calendar</a>
+          <a class="action-btn cal" id="cal-google" href="#" target="_blank" rel="noopener">Google Calendar</a>
+        </div>
+      </div>
       <div class="bookings-header">
         <h2>All Bookings</h2>
         <div class="filter-row">
@@ -611,6 +644,109 @@ async function showDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'flex';
   await loadBookings();
+  loadCalendarLinks();
+  startAutoRefresh();
+}
+
+// ── New bookings: check every minute and pop up an alert ──
+const REFRESH_MS = 60000;
+let knownIds = null;
+let refreshTimer = null;
+const baseTitle = document.title;
+
+function startAutoRefresh() {
+  if (refreshTimer) return;
+  refreshTimer = setInterval(refreshBookings, REFRESH_MS);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') refreshBookings();
+  });
+}
+
+function noteNewBookings() {
+  const ids = allBookings.map(b => b.id);
+  const fresh = knownIds ? allBookings.filter(b => !knownIds.has(b.id)) : [];
+  knownIds = new Set(ids);
+  if (!fresh.length) return;
+
+  const getName = b => b.name || [b.firstName, b.lastName].filter(Boolean).join(' ') || 'New client';
+  const first = fresh[0];
+  const text = fresh.length === 1
+    ? `🔔 New booking: ${getName(first)} — ${first.date ? formatDate(first.date) : ''} at ${first.time || first.slot || ''}`
+    : `🔔 ${fresh.length} new bookings — check Pending`;
+  document.getElementById('new-alert-text').textContent = text;
+  document.getElementById('new-alert').classList.add('show');
+  document.title = `(${fresh.length}) New booking · ${baseTitle}`;
+  showToast(text, 'success');
+}
+
+function dismissNewAlert() {
+  document.getElementById('new-alert').classList.remove('show');
+  document.title = baseTitle;
+}
+
+// Re-fetch without resetting the filter the admin is looking at.
+async function refreshBookings() {
+  if (!adminKey) return;
+  try {
+    const res = await fetchWithTimeout(`${API}/api/admin/bookings`, { headers: { 'x-admin-key': adminKey } });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!Array.isArray(data)) return;
+    allBookings = data;
+  } catch { return; }
+  noteNewBookings();
+  renderStats();
+  try { renderList(); } catch(e) { console.error('renderList error:', e); }
+  try { renderCalendar(); } catch(e) { console.error('renderCalendar error:', e); }
+}
+
+// ── Calendar sync ──
+let calInfo = null;
+
+async function loadCalendarLinks() {
+  try {
+    const res = await fetchWithTimeout(`${API}/api/admin/calendar`, { headers: { 'x-admin-key': adminKey } });
+    if (!res.ok) return;
+    calInfo = await res.json();
+  } catch { return; }
+  const webcal = calInfo.feedUrl.replace(/^https?:/, 'webcal:');
+  document.getElementById('cal-apple').href  = webcal;
+  document.getElementById('cal-google').href =
+    `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcal)}`;
+  renderList();
+}
+
+function minutesOf(time) {
+  const m = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(String(time || '').trim());
+  if (!m) return null;
+  return (Number(m[1]) % 12 + (m[3].toUpperCase() === 'PM' ? 12 : 0)) * 60 + Number(m[2]);
+}
+
+// "Add to Google Calendar" link for one booking (times in New York time).
+function googleEventLink(b) {
+  const start = minutesOf(b.time || b.slot);
+  if (!b.date || start === null) return null;
+  const end = start + (b.duration_minutes || 120);
+  const day = b.date.replace(/-/g, '');
+  const hhmm = m => String(Math.floor(m / 60)).padStart(2, '0') + String(m % 60).padStart(2, '0') + '00';
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: `🚿 ${b.name || 'Detail'} — ${serviceLabel(b.service)}`,
+    dates: `${day}T${hhmm(start)}/${day}T${hhmm(end)}`,
+    ctz: 'America/New_York',
+    location: b.address || '',
+    details: [`Phone: ${b.phone || ''}`, b.vehicle_size && `Size: ${b.vehicle_size}`,
+              b.total && `Est. total: $${b.total}`, b.notes].filter(Boolean).join('\n'),
+  });
+  return `https://calendar.google.com/calendar/render?${params}`;
+}
+
+function calendarButtons(b) {
+  if (!['confirmed', 'completed'].includes(b.status)) return '';
+  const google = googleEventLink(b);
+  const apple  = calInfo && `${calInfo.base}/api/calendar/booking/${b.id}.ics?token=${calInfo.token}`;
+  return (google ? `<a class="action-btn cal" href="${google}" target="_blank" rel="noopener">+ Google</a>` : '') +
+         (apple  ? `<a class="action-btn cal" href="${apple}">+ Apple</a>` : '');
 }
 
 // ── Data ──
@@ -621,6 +757,7 @@ async function loadBookings() {
     });
     const data = await res.json();
     allBookings = Array.isArray(data) ? data : [];
+    knownIds = new Set(allBookings.map(b => b.id));
     // Reset to All filter on fresh load so bookings are always visible
     currentFilter = 'all';
     document.querySelectorAll('.filter-btn').forEach((b,i) => {
@@ -678,7 +815,11 @@ function renderList() {
 
   list.innerHTML = bookings.map(b => {
     const dateStr = b.date ? formatDate(b.date) : '—';
-    const addons  = Array.isArray(b.addons) ? b.addons.join(', ') : (b.addons || null);
+    // The booking form stores add-ons as { deepSeat: true, ... }; the chat as a string.
+    const addons  = Array.isArray(b.addons) ? b.addons.join(', ')
+      : (b.addons && typeof b.addons === 'object')
+        ? Object.keys(b.addons).filter(k => b.addons[k]).map(k => ADDON_LABELS[k] || k).join(', ') || null
+        : (b.addons || null);
     const actions = actionsFor(b);
     const total   = b.total ? `<span class="booking-amount">$${b.total}</span>` : '';
     return `
@@ -694,7 +835,7 @@ function renderList() {
           <span>${dateStr} &middot; ${getTime(b)||'—'}</span>
         </div>
         <div class="booking-service-line">
-          <span>${b.service||'—'}</span>
+          <span>${serviceLabel(b.service)||'—'}</span>
           <span>${getSize(b)||'—'}</span>
         </div>
         <div class="booking-contact-line">
@@ -711,8 +852,13 @@ function renderList() {
   }).join('');
 }
 
+const ADDON_LABELS = { deepSeat: 'Deep Seat Cleaning', extraDirty: 'Extra Dirty Fee', travelFee: 'Travel Fee' };
+// The booking form stores the service key ("bundle"); the chat stores the full name.
+const SERVICE_LABELS = { interior: 'Interior Detail', exterior: 'Exterior Detail', bundle: 'Full Detail Bundle' };
+const serviceLabel = s => SERVICE_LABELS[s] || s || '';
+
 function actionsFor(b) {
-  const btns = [];
+  const btns = [calendarButtons(b)];
   if (b.status === 'pending') {
     btns.push(`<button class="action-btn confirm" onclick="updateStatus(${b.id},'confirmed')">Confirm</button>`);
     btns.push(`<button class="action-btn cancel"  onclick="updateStatus(${b.id},'cancelled')">Cancel</button>`);
@@ -737,7 +883,9 @@ async function updateStatus(id, status) {
     renderStats();
     renderList();
     renderCalendar();
-    showToast(`Booking #${id} marked as ${status}`, 'success');
+    showToast(status === 'confirmed'
+      ? `Booking #${id} confirmed — it's in your synced calendar, or tap + Google / + Apple`
+      : `Booking #${id} marked as ${status}`, 'success');
   } catch {
     showToast('Failed to update booking', 'error');
   }
