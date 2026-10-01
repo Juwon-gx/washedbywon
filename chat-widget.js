@@ -12,11 +12,13 @@
     options: ['Book a detail', 'See pricing', 'Ask a question'],
   };
   const TEASER = {
-    text: 'Hey! 👋 Want your car detailed? What are you driving?',
+    text: "Hey, welcome to WashedByWon! I can help you book or answer any questions.\n\n" +
+      "Car size: a compact sedan is Small, a full or mid-size car is Medium, and SUVs are Large. " +
+      "You could also go by tank size and add another 0. Like my tank size is 13.0 gallons ('22 Corolla SE).\n\n" +
+      'Ask any questions!',
     options: [
-      { label: 'Sedan / Coupe', send: 'I have a sedan / coupe and want to book a detail.' },
-      { label: 'SUV / Crossover', send: 'I have an SUV / crossover and want to book a detail.' },
-      { label: 'Truck / Van', send: 'I have a truck / van and want to book a detail.' },
+      { label: 'Book a detail', send: "I'd like to book a detail." },
+      { label: 'Ask a question', send: 'I have a question.' },
     ],
   };
 
@@ -46,7 +48,7 @@
   .wbw-teaser{position:fixed;bottom:5.4rem;right:1.5rem;z-index:400;width:min(290px,calc(100vw - 2rem));padding:.9rem 1rem 1rem;
     background:rgba(14,6,23,.97);border:1px solid rgba(107,33,212,.35);border-radius:14px 14px 2px 14px;color:#f3eefc;
     box-shadow:0 16px 60px rgba(0,0,0,.55);animation:wbw-pop .35s cubic-bezier(.22,1,.36,1)}
-  .wbw-teaser p{margin:0 1.2rem .7rem 0;font-size:.85rem;line-height:1.5;cursor:pointer}
+  .wbw-teaser p{margin:0 1.2rem .7rem 0;font-size:.85rem;line-height:1.5;cursor:pointer;white-space:pre-line}
   .wbw-teaser-x{position:absolute;top:.35rem;right:.5rem;background:none;border:none;color:var(--muted2,#9b90ad);font-size:1.1rem;cursor:pointer;padding:.2rem}
   .wbw-panel{position:fixed;bottom:5.5rem;right:1.5rem;z-index:400;width:min(370px,calc(100vw - 2rem));height:min(540px,calc(100dvh - 7.5rem));
     background:rgba(14,6,23,.97);border:1px solid rgba(107,33,212,.3);border-radius:12px;display:flex;flex-direction:column;
@@ -196,7 +198,7 @@
     ].filter(Boolean);
     lines.forEach(l => card.appendChild(el('div', null, l)));
     card.appendChild(el('div', 'wbw-card-total', `Est. total $${b.total} · pay after service`));
-    card.appendChild(el('div', null, "Won will text you to confirm."));
+    card.appendChild(el('div', null, b.smsConsent ? 'Won will text you to confirm.' : 'Won will reach out to confirm.'));
     return card;
   }
 
@@ -230,6 +232,9 @@
     text = (text || '').trim();
     if (!text || sending) return;
     if (input) input.value = '';
+    // A new message replaces the last connection error instead of sending it as history
+    if (messages.length && messages[messages.length - 1].error) messages.pop();
+    retryText = null;
     messages.push({ role: 'user', content: text });
     sending = true;
     save(STORE_KEY, messages);
@@ -264,7 +269,6 @@
   function pick(option) {
     const last = messages[messages.length - 1];
     if (last && last.error && retryText) {
-      messages.pop();
       send(retryText);
     } else {
       send(option);

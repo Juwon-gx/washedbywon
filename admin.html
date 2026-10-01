@@ -912,7 +912,7 @@ function renderScheduleBuilder() {
     const cfg    = dayCfg(iso);
     const isPast = date < today;
 
-    const slotBtns = TIME_SLOTS.map(t => {
+    const slotBtns = defaultSlots.map(t => {
       const sel = cfg.slots.includes(t);
       return `<button class="slot-btn${sel?' slot-sel':''}"
         onclick="toggleSlot('${iso}','${t}')"
