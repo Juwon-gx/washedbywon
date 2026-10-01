@@ -6,10 +6,20 @@
   const TEASER_KEY = 'wbw_chat_teaser_seen';
   const TEASER_DELAY = 4000;
 
+  // Prices match the booking form and the backend price table.
   const GREETING = {
     role: 'assistant',
-    content: "Hey! 👋 I'm Won's assistant. I can answer questions or book your detail right here. What can I help with?",
-    options: ['Book a detail', 'See pricing', 'Ask a question'],
+    content: "Hey! 👋 Welcome to WashedByWon. I can answer questions or book your detail right here.\n\n" +
+      "Pricing is based on your vehicle's size:\n\n" +
+      'Small: compact cars and coupes (Corolla, Civic)\n' +
+      'Interior $65 · Exterior $75 · Full Detail $129\n\n' +
+      'Medium: mid and full-size sedans (Camry, Accord)\n' +
+      'Interior $85 · Exterior $95 · Full Detail $162\n\n' +
+      'Large: SUVs, trucks and vans\n' +
+      'Interior $105 · Exterior $115 · Full Detail $198\n\n' +
+      "These are starting prices. Pet hair or a very dirty interior can add to it, and we'll always tell you first. " +
+      'What are you driving?',
+    options: ['Book a detail', 'Which size is my car?', 'Ask a question'],
   };
   const TEASER = {
     text: "Hey, welcome to WashedByWon! I can help you book or answer any questions.\n\n" +
