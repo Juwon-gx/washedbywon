@@ -652,6 +652,10 @@ async function showDashboard() {
 const REFRESH_MS = 60000;
 let knownIds = null;
 let refreshTimer = null;
+let refreshing = false;
+// Bumped by every refresh and every status change; a response from an older
+// number is stale and dropped, so it can't undo newer data.
+let bookingsVersion = 0;
 const baseTitle = document.title;
 
 function startAutoRefresh() {
@@ -686,14 +690,16 @@ function dismissNewAlert() {
 
 // Re-fetch without resetting the filter the admin is looking at.
 async function refreshBookings() {
-  if (!adminKey) return;
+  if (!adminKey || refreshing) return;
+  refreshing = true;
+  const version = ++bookingsVersion;
   try {
     const res = await fetchWithTimeout(`${API}/api/admin/bookings`, { headers: { 'x-admin-key': adminKey } });
     if (!res.ok) return;
     const data = await res.json();
-    if (!Array.isArray(data)) return;
+    if (!Array.isArray(data) || version !== bookingsVersion) return;
     allBookings = data;
-  } catch { return; }
+  } catch { return; } finally { refreshing = false; }
   noteNewBookings();
   renderStats();
   try { renderList(); } catch(e) { console.error('renderList error:', e); }
@@ -722,6 +728,10 @@ function minutesOf(time) {
   return (Number(m[1]) % 12 + (m[3].toUpperCase() === 'PM' ? 12 : 0)) * 60 + Number(m[2]);
 }
 
+// Older bookings may use the form's field names.
+const bookingName = b => b.name || [b.firstName, b.lastName].filter(Boolean).join(' ') || 'Detail';
+const bookingSize = b => b.vehicle_size || b.vehicleSize || b.size || '';
+
 // "Add to Google Calendar" link for one booking (times in New York time).
 function googleEventLink(b) {
   const start = minutesOf(b.time || b.slot);
@@ -731,11 +741,11 @@ function googleEventLink(b) {
   const hhmm = m => String(Math.floor(m / 60)).padStart(2, '0') + String(m % 60).padStart(2, '0') + '00';
   const params = new URLSearchParams({
     action: 'TEMPLATE',
-    text: `🚿 ${b.name || 'Detail'} — ${serviceLabel(b.service)}`,
+    text: `🚿 ${bookingName(b)} — ${serviceLabel(b.service)}`,
     dates: `${day}T${hhmm(start)}/${day}T${hhmm(end)}`,
     ctz: 'America/New_York',
     location: b.address || '',
-    details: [`Phone: ${b.phone || ''}`, b.vehicle_size && `Size: ${b.vehicle_size}`,
+    details: [`Phone: ${b.phone || ''}`, bookingSize(b) && `Size: ${bookingSize(b)}`,
               b.total && `Est. total: $${b.total}`, b.notes].filter(Boolean).join('\n'),
   });
   return `https://calendar.google.com/calendar/render?${params}`;
@@ -878,6 +888,7 @@ async function updateStatus(id, status) {
       body: JSON.stringify({ status })
     });
     if (!res.ok) throw new Error();
+    bookingsVersion++;   // drop any refresh that started before this change
     const b = allBookings.find(b => b.id === id);
     if (b) b.status = status;
     renderStats();
